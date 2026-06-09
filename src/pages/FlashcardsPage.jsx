@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import SpeakButton from "../components/SpeakButton.jsx";
 import {
   getDueWords,
   updateReviewResult,
@@ -114,9 +115,12 @@ function FlashcardsPage() {
         <p className="text-sm font-bold uppercase tracking-[0.14em] text-blue-700">
           Word
         </p>
-        <h2 className="mt-4 text-5xl font-bold text-blue-950">
-          {currentWord.term}
-        </h2>
+        <div className="mt-4 flex flex-col items-center gap-3">
+          <h2 className="text-5xl font-bold text-blue-950">
+            {currentWord.term}
+          </h2>
+          <SpeakButton text={currentWord.term} />
+        </div>
 
         {currentWord.pronunciation ? (
           <p className="mt-3 text-slate-500">{currentWord.pronunciation}</p>

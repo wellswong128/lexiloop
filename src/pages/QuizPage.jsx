@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import SpeakButton from "../components/SpeakButton.jsx";
 import { createQuizQuestions } from "../features/review/quizHelpers.js";
 import { updateReviewResult } from "../features/review/reviewHelpers.js";
 import { useWordsContext } from "../features/words/WordsContext.jsx";
@@ -122,9 +123,12 @@ function QuizPage() {
         <p className="text-sm font-bold uppercase tracking-[0.14em] text-blue-700">
           Choose the correct definition
         </p>
-        <h2 className="mt-4 text-5xl font-bold text-blue-950">
-          {currentQuestion.word.term}
-        </h2>
+        <div className="mt-4 flex flex-col items-center gap-3">
+          <h2 className="text-5xl font-bold text-blue-950">
+            {currentQuestion.word.term}
+          </h2>
+          <SpeakButton text={currentQuestion.word.term} />
+        </div>
       </div>
 
       <div className="mt-6 grid gap-3">

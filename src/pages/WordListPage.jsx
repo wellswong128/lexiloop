@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import SpeakButton from "../components/SpeakButton.jsx";
 import { useWordsContext } from "../features/words/WordsContext.jsx";
 
 function WordListPage() {
@@ -89,9 +90,12 @@ function WordListPage() {
             >
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-blue-950">
-                    {word.term}
-                  </h2>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <h2 className="text-2xl font-bold text-blue-950">
+                      {word.term}
+                    </h2>
+                    <SpeakButton text={word.term} />
+                  </div>
                   <p className="mt-2 text-slate-600">{word.definition}</p>
                   {word.translation ? (
                     <p className="mt-2 text-sm font-medium text-slate-500">

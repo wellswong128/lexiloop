@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import SpeakButton from "../components/SpeakButton.jsx";
 import { useWordsContext } from "../features/words/WordsContext.jsx";
 
 function getFormValues(word) {
@@ -98,9 +99,12 @@ function WordDetailPage() {
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-blue-700">
             Word Detail
           </p>
-          <h1 className="text-4xl font-bold text-blue-950 sm:text-5xl">
-            {word.term}
-          </h1>
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="text-4xl font-bold text-blue-950 sm:text-5xl">
+              {word.term}
+            </h1>
+            <SpeakButton text={word.term} />
+          </div>
           <p className="mt-4 text-lg leading-8 text-slate-600">
             {word.definition}
           </p>
