@@ -1,0 +1,116 @@
+export const WORD_SOURCES = {
+  MANUAL: "manual",
+  IMPORT: "import",
+  AI: "ai",
+};
+
+export const REVIEW_RESULTS = {
+  CORRECT: "correct",
+  INCORRECT: "incorrect",
+  REMEMBERED: "remembered",
+  FORGOT: "forgot",
+};
+
+export const EXAMPLE_WORD = {
+  id: "word_1710000000000_abc123",
+  term: "resilient",
+  definition: "Able to recover quickly from difficulty.",
+  translation: "",
+  pronunciation: "/ri-ZIL-yent/",
+  partOfSpeech: "adjective",
+  example: "She is resilient after every setback.",
+  notes: "Useful for describing people, systems, or communities.",
+  tags: ["personality", "advanced"],
+  source: WORD_SOURCES.MANUAL,
+  createdAt: "2026-06-09T09:00:00.000Z",
+  updatedAt: "2026-06-09T09:00:00.000Z",
+  review: {
+    level: 0,
+    nextReviewAt: "2026-06-09T09:00:00.000Z",
+    lastReviewedAt: null,
+    correctCount: 0,
+    incorrectCount: 0,
+    lastResult: null,
+  },
+  mistake: {
+    isMistake: false,
+    lastMistakeAt: null,
+    mistakeCount: 0,
+  },
+};
+
+export function getCurrentIsoDate() {
+  return new Date().toISOString();
+}
+
+export function generateWordId(timestamp = Date.now()) {
+  const randomPart = Math.random().toString(36).slice(2, 8);
+
+  return `word_${timestamp}_${randomPart}`;
+}
+
+export function normalizeText(value) {
+  return String(value ?? "").trim();
+}
+
+export function normalizeTerm(value) {
+  return normalizeText(value).toLowerCase();
+}
+
+export function normalizeTags(value) {
+  if (Array.isArray(value)) {
+    return value.map(normalizeText).filter(Boolean);
+  }
+
+  if (typeof value === "string") {
+    return value.split(",").map(normalizeText).filter(Boolean);
+  }
+
+  return [];
+}
+
+export function createInitialReview(now = getCurrentIsoDate()) {
+  return {
+    level: 0,
+    nextReviewAt: now,
+    lastReviewedAt: null,
+    correctCount: 0,
+    incorrectCount: 0,
+    lastResult: null,
+  };
+}
+
+export function createInitialMistake() {
+  return {
+    isMistake: false,
+    lastMistakeAt: null,
+    mistakeCount: 0,
+  };
+}
+
+export function createWord(input, options = {}) {
+  const now = options.now ?? getCurrentIsoDate();
+  const term = normalizeText(input?.term);
+  const definition = normalizeText(input?.definition);
+
+  if (!term || !definition) {
+    throw new Error("A word needs both term and definition.");
+  }
+
+  return {
+    id: options.id ?? generateWordId(),
+    term,
+    definition,
+    translation: normalizeText(input?.translation),
+    pronunciation: normalizeText(input?.pronunciation),
+    partOfSpeech: normalizeText(input?.partOfSpeech),
+    example: normalizeText(input?.example),
+    notes: normalizeText(input?.notes),
+    tags: normalizeTags(input?.tags),
+    source: options.source ?? WORD_SOURCES.MANUAL,
+    createdAt: now,
+    updatedAt: now,
+    review: createInitialReview(now),
+    mistake: createInitialMistake(),
+  };
+}

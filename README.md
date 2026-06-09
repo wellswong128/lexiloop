@@ -1,0 +1,149 @@
+# LexiLoop
+
+LexiLoop is an English vocabulary memory app built with React. It helps users save English words, review them with flashcards, test themselves with quizzes, collect mistakes, and remember words through simple spaced repetition.
+
+The first version uses `localStorage` so the app can be built quickly without a backend. A future version will use Supabase for accounts, cloud sync, and multi-device access.
+
+## MVP Features
+
+- Add English vocabulary words.
+- View a saved word list.
+- Review words with flashcards.
+- Take a simple quiz.
+- Save incorrect answers in a mistake notebook.
+- Use simple spaced repetition.
+- Import vocabulary data from JSON.
+- Prepare for future AI auto-completion.
+
+## Tech Stack
+
+- React
+- Vite
+- Tailwind CSS
+- React Router
+- localStorage for the MVP
+- Supabase later
+- Vercel deployment
+
+## Project Documents
+
+- `PROJECT_PLAN.md`: product goal, MVP scope, pages, phases, and engineering principles.
+- `TASKS.md`: beginner-friendly task list ordered from setup to deployment.
+- `DATA_MODEL.md`: localStorage data model and future Supabase table design.
+- `PROMPTS.md`: reusable Cursor prompts for development, debugging, refactoring, and future features.
+- `README.md`: project overview and setup notes.
+
+## Planned Pages
+
+| Page | Route | Purpose |
+| --- | --- | --- |
+| Home | `/` | App overview and quick actions. |
+| Word List | `/words` | Browse, search, edit, and delete words. |
+| Add Word | `/words/new` | Add a new vocabulary word. |
+| Word Detail | `/words/:id` | View and edit one word. |
+| Flashcards | `/review/flashcards` | Review due words. |
+| Quiz | `/review/quiz` | Test word knowledge. |
+| Mistakes | `/mistakes` | Review incorrect answers. |
+| Import | `/import` | Import words from JSON. |
+| Settings | `/settings` | Manage local data and future sync settings. |
+
+## Getting Started
+
+Install dependencies and start the local development server.
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the local Vite URL shown in the terminal.
+
+## Development Order
+
+1. Create the Vite React project.
+2. Add Tailwind CSS.
+3. Add React Router.
+4. Create the folder structure.
+5. Implement the word data model.
+6. Implement localStorage helpers.
+7. Build Add Word and Word List.
+8. Build Flashcards and Quiz.
+9. Build Mistake Notebook.
+10. Build JSON Import.
+11. Polish, debug, and deploy.
+12. Plan and implement Supabase later.
+
+## localStorage Version
+
+The MVP stores all words in the browser with this key:
+
+```text
+lexiloop.words.v1
+```
+
+This makes the first version simple and fast to build. The tradeoff is that data stays in the same browser and can be lost if the user clears browser storage.
+
+## Future Supabase Version
+
+Supabase will be added after the localStorage MVP works.
+
+Planned Supabase features:
+
+- User sign up and login.
+- Cloud word storage.
+- Review history.
+- Mistake tracking.
+- Row Level Security so users can only access their own data.
+- Possible local cache later for offline-friendly behavior.
+
+## Future AI Auto-Completion
+
+AI auto-completion should be added after the manual app flow is stable.
+
+Planned flow:
+
+1. User types an English word.
+2. User clicks `AI Fill`.
+3. The app requests suggested word data from a backend or secure API route.
+4. AI returns editable suggestions.
+5. User reviews and confirms before saving.
+
+Important: API keys should not be stored directly in frontend code.
+
+## Deployment
+
+The app is ready to deploy to Vercel after the production build succeeds.
+
+Expected Vercel settings:
+
+- Build command: `npm run build`
+- Output directory: `dist`
+
+This project includes `vercel.json` so React Router routes work after page refresh on Vercel.
+
+Before deployment, run:
+
+```bash
+npm run build
+```
+
+Manual deployment steps:
+
+1. Create a GitHub repository.
+2. Push this project to GitHub.
+3. Create a new Vercel project.
+4. Import the GitHub repository.
+5. Confirm Vercel detects Vite.
+6. Confirm build command is `npm run build`.
+7. Confirm output directory is `dist`.
+8. Deploy.
+9. Test `/`, `/words`, `/words/new`, `/review/flashcards`, `/review/quiz`, `/mistakes`, `/import`, and `/settings` on the deployed URL.
+
+## Current Status
+
+The localStorage MVP is implemented through JSON import, quiz, flashcards, mistakes, and basic settings.
+
+```text
+Next step: push to GitHub and deploy to Vercel.
+```
+
