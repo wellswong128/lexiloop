@@ -127,17 +127,24 @@ Do not commit real `.env` files or service role keys.
 
 ## Future AI Auto-Completion
 
-AI auto-completion should be added after the manual app flow is stable.
+AI auto-completion is available on the Add Word page through a Vercel serverless function using Agnes AI.
 
-Planned flow:
+Current flow:
 
 1. User types an English word.
 2. User clicks `AI Fill`.
-3. The app requests suggested word data from a backend or secure API route.
+3. The app sends only the English word to `/api/complete-word`.
 4. AI returns editable suggestions.
 5. User reviews and confirms before saving.
 
-Important: API keys should not be stored directly in frontend code.
+Required server-side environment variables:
+
+```bash
+AGNES_API_KEY=your_agnes_api_key
+AGNES_MODEL=agnes-2.0-flash
+```
+
+Important: `AGNES_API_KEY` must be configured in Vercel environment variables. Do not expose it with a `VITE_` prefix and do not store it in frontend code.
 
 ## Deployment
 

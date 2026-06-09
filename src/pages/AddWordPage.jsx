@@ -12,11 +12,31 @@ const initialFormValues = {
   tags: "",
 };
 
+async function readJsonResponse(response) {
+  const text = await response.text();
+
+  if (!text) {
+    throw new Error(
+      "AI service returned an empty response. Check the Vercel function logs and AGNES_API_KEY.",
+    );
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error(
+      "AI service did not return JSON. If you are testing locally, run through Vercel or deploy the latest version.",
+    );
+  }
+}
+
 function AddWordPage() {
   const navigate = useNavigate();
   const { addWord } = useWordsContext();
   const [formValues, setFormValues] = useState(initialFormValues);
+  const [aiMessage, setAiMessage] = useState("");
   const [error, setError] = useState("");
+  const [isAiLoading, setIsAiLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   function handleChange(event) {
@@ -26,6 +46,52 @@ function AddWordPage() {
       ...currentValues,
       [name]: value,
     }));
+  }
+
+  async function handleAiFill() {
+    const term = formValues.term.trim();
+
+    if (!term) {
+      setError("Enter an English word before using AI Fill.");
+      return;
+    }
+
+    try {
+      setError("");
+      setAiMessage("");
+      setIsAiLoading(true);
+
+      const response = await fetch("/api/complete-word", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ term }),
+      });
+      const data = await readJsonResponse(response);
+
+      if (!response.ok) {
+        throw new Error(data.error || "AI Fill failed.");
+      }
+
+      setFormValues((currentValues) => ({
+        ...currentValues,
+        term: data.suggestion.term || currentValues.term,
+        definition: data.suggestion.definition || currentValues.definition,
+        translation: data.suggestion.translation || currentValues.translation,
+        pronunciation: data.suggestion.pronunciation || currentValues.pronunciation,
+        partOfSpeech: data.suggestion.partOfSpeech || currentValues.partOfSpeech,
+        example: data.suggestion.example || currentValues.example,
+        tags: Array.isArray(data.suggestion.tags)
+          ? data.suggestion.tags.join(", ")
+          : currentValues.tags,
+      }));
+      setAiMessage("AI suggestions were added. Review and edit before saving.");
+    } catch (aiError) {
+      setError(aiError.message);
+    } finally {
+      setIsAiLoading(false);
+    }
   }
 
   async function handleSubmit(event) {
@@ -63,6 +129,30 @@ function AddWordPage() {
       </div>
 
       <form className="space-y-5" onSubmit={handleSubmit}>
+        <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="font-bold text-blue-950">AI Auto-Fill</h2>
+              <p className="mt-1 text-sm text-slate-600">
+                Type an English word, then let AI suggest editable word data.
+              </p>
+            </div>
+            <button
+              className="rounded-full bg-blue-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-800 disabled:bg-slate-300"
+              disabled={isAiLoading || isSaving}
+              onClick={handleAiFill}
+              type="button"
+            >
+              {isAiLoading ? "Filling..." : "AI Fill"}
+            </button>
+          </div>
+          {aiMessage ? (
+            <p className="mt-3 rounded-xl border border-green-200 bg-green-50 px-3 py-2 text-sm font-medium text-green-700">
+              {aiMessage}
+            </p>
+          ) : null}
+        </div>
+
         {error ? (
           <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
             {error}

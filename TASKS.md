@@ -277,14 +277,14 @@ npm run build
 
 ## Phase 20: Future AI Auto-Completion
 
-- [ ] Add an `AI Fill` button on the Add Word page.
-- [ ] Decide which AI API to use.
-- [ ] Send only the English word to the AI service.
-- [ ] Ask AI for definition, translation, example sentence, part of speech, and tags.
-- [ ] Show AI results as editable suggestions.
-- [ ] Let the user confirm before saving.
-- [ ] Add error handling for failed AI requests.
-- [ ] Avoid storing API keys in frontend code.
+- [x] Add an `AI Fill` button on the Add Word page.
+- [x] Decide which AI API to use.
+- [x] Send only the English word to the AI service.
+- [x] Ask AI for definition, translation, example sentence, part of speech, and tags.
+- [x] Show AI results as editable suggestions.
+- [x] Let the user confirm before saving.
+- [x] Add error handling for failed AI requests.
+- [x] Avoid storing API keys in frontend code.
 
 ## Good First Milestone
 
