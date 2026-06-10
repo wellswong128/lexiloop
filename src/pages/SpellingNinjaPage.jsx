@@ -1,0 +1,680 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { useWordsContext } from "../features/words/WordsContext.jsx";
+
+const fallbackWords = [
+  { word: "apple", meaning: "蘋果", type: "noun" },
+  { word: "school", meaning: "學校", type: "noun" },
+  { word: "friend", meaning: "朋友", type: "noun" },
+  { word: "protect", meaning: "保護", type: "verb" },
+  { word: "future", meaning: "未來", type: "noun" },
+  { word: "simple", meaning: "簡單的", type: "adj" },
+  { word: "planet", meaning: "行星", type: "noun" },
+  { word: "challenge", meaning: "挑戰", type: "noun / verb" },
+  { word: "beautiful", meaning: "美麗的", type: "adj" },
+  { word: "dangerous", meaning: "危險的", type: "adj" },
+  { word: "important", meaning: "重要的", type: "adj" },
+  { word: "confident", meaning: "有自信的", type: "adj" },
+  { word: "efficient", meaning: "有效率的", type: "adj" },
+  { word: "evidence", meaning: "證據", type: "noun" },
+  { word: "phenomenon", meaning: "現象", type: "noun" },
+];
+
+const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+const maxHp = 3;
+const maxTime = 30;
+
+function shuffleArray(array) {
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
+function normalizeGameWord(term) {
+  return term.toLowerCase().replace(/[^a-z]/g, "");
+}
+
+function getGameId(prefix) {
+  const randomId =
+    typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+  return `${prefix}-${randomId}`;
+}
+
+function playTone(freq = 440, duration = 0.1, type = "sine", volume = 0.04) {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.value = volume;
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.stop(ctx.currentTime + duration);
+  } catch {
+    // Audio is optional; keep the game playable without it.
+  }
+}
+
+function createLetters(word, level) {
+  const mainLetters = word.split("").map((letter, index) => ({
+    id: getGameId(`m-${index}`),
+    letter,
+    used: false,
+    bomb: false,
+  }));
+  const distractorCount = Math.min(10, 3 + Math.floor(level / 2));
+  const distractors = Array.from({ length: distractorCount }, () => ({
+    id: getGameId("d"),
+    letter: alphabet[Math.floor(Math.random() * alphabet.length)],
+    used: false,
+    bomb: false,
+  }));
+  const bombCount = level >= 3 ? Math.min(3, 1 + Math.floor(level / 4)) : 0;
+  const bombs = Array.from({ length: bombCount }, () => ({
+    id: getGameId("b"),
+    letter: alphabet[Math.floor(Math.random() * alphabet.length)],
+    used: false,
+    bomb: true,
+  }));
+
+  return shuffleArray([...mainLetters, ...distractors, ...bombs]);
+}
+
+function getWordForLevel(wordBank, level) {
+  const available = wordBank.filter((item) => {
+    if (level <= 2) return item.word.length <= 6;
+    if (level <= 5) return item.word.length <= 9;
+    return true;
+  });
+
+  return available[Math.floor(Math.random() * available.length)] ?? wordBank[0];
+}
+
+function createRound(wordBank, level) {
+  const word = getWordForLevel(wordBank, level);
+
+  return {
+    word,
+    letters: createLetters(word.word, level),
+    targetIndex: 0,
+  };
+}
+
+function SpellingNinjaPage() {
+  const { words } = useWordsContext();
+  const wordBank = useMemo(() => {
+    const savedWords = words
+      .map((word) => ({
+        word: normalizeGameWord(word.term),
+        meaning: word.translation || word.definition,
+        type: word.partOfSpeech || "word",
+      }))
+      .filter((word) => word.word.length >= 3);
+
+    return savedWords.length >= 3 ? savedWords : fallbackWords;
+  }, [words]);
+
+  const [gameState, setGameState] = useState("start");
+  const [round, setRound] = useState(null);
+  const [score, setScore] = useState(0);
+  const [combo, setCombo] = useState(0);
+  const [bestCombo, setBestCombo] = useState(0);
+  const [hp, setHp] = useState(maxHp);
+  const [timeLeft, setTimeLeft] = useState(maxTime);
+  const [level, setLevel] = useState(1);
+  const [fever, setFever] = useState(0);
+  const [feverActive, setFeverActive] = useState(false);
+  const [correctWords, setCorrectWords] = useState(0);
+  const [mistakes, setMistakes] = useState(0);
+  const [missedWords, setMissedWords] = useState([]);
+  const [defeatedWords, setDefeatedWords] = useState([]);
+  const [status, setStatus] = useState({ text: "", type: "" });
+  const [roundLocked, setRoundLocked] = useState(false);
+  const [flash, setFlash] = useState("");
+  const [slashKey, setSlashKey] = useState(0);
+
+  const startRound = useCallback(
+    (nextLevel) => {
+      const nextRound = createRound(wordBank, nextLevel);
+
+      setRound(nextRound);
+      setTimeLeft(Math.max(12, maxTime - Math.floor(nextLevel * 1.3)));
+      setRoundLocked(false);
+      setStatus({ text: "", type: "" });
+      setFlash("");
+    },
+    [wordBank],
+  );
+
+  function startGame() {
+    const firstRound = createRound(wordBank, 1);
+
+    setScore(0);
+    setCombo(0);
+    setBestCombo(0);
+    setHp(maxHp);
+    setLevel(1);
+    setFever(0);
+    setFeverActive(false);
+    setCorrectWords(0);
+    setMistakes(0);
+    setMissedWords([]);
+    setDefeatedWords([]);
+    setRound(firstRound);
+    setTimeLeft(Math.max(12, maxTime - Math.floor(1 * 1.3)));
+    setRoundLocked(false);
+    setStatus({ text: "", type: "" });
+    setFlash("");
+    setGameState("playing");
+  }
+
+  const endGame = useCallback(() => {
+    setGameState("over");
+    setRoundLocked(true);
+  }, []);
+
+  const addMissedWord = useCallback((word) => {
+    setMissedWords((currentWords) => {
+      if (currentWords.some((item) => item.word === word.word)) {
+        return currentWords;
+      }
+
+      return [...currentWords, word];
+    });
+  }, []);
+
+  const handleMistake = useCallback(
+    (text) => {
+      setMistakes((count) => count + 1);
+      setCombo(0);
+      setFever((value) => Math.max(0, value - 25));
+      setFeverActive(false);
+      setStatus({ text, type: "bad" });
+      setFlash("bad");
+      playTone(150, 0.16, "sawtooth", 0.035);
+
+      if (round?.word) {
+        addMissedWord(round.word);
+      }
+
+      setHp((currentHp) => {
+        const nextHp = currentHp - 1;
+
+        if (nextHp <= 0) {
+          window.setTimeout(endGame, 650);
+        }
+
+        return Math.max(0, nextHp);
+      });
+    },
+    [addMissedWord, endGame, round],
+  );
+
+  const completeWord = useCallback(() => {
+    if (!round?.word) return;
+
+    setRoundLocked(true);
+    setCorrectWords((count) => count + 1);
+    setDefeatedWords((currentWords) => [...currentWords, round.word]);
+    setScore((value) => value + (feverActive ? 35 : 20) + Math.max(0, timeLeft));
+    setFever(0);
+    setFeverActive(false);
+    setStatus({
+      text: `Word cleared: ${round.word.word.toUpperCase()}!`,
+      type: "bonus",
+    });
+    setFlash("good");
+    playTone(880, 0.08, "triangle", 0.045);
+
+    window.setTimeout(() => {
+      setLevel((currentLevel) => {
+        const nextLevel = currentLevel + 1;
+
+        if (nextLevel % 4 === 0) {
+          setHp((currentHp) => Math.min(maxHp, currentHp + 1));
+        }
+
+        startRound(nextLevel);
+        return nextLevel;
+      });
+    }, 900);
+  }, [feverActive, round, startRound, timeLeft]);
+
+  const handleTimeout = useCallback(() => {
+    if (!round || roundLocked) return;
+
+    setRoundLocked(true);
+    addMissedWord(round.word);
+    setMistakes((count) => count + 1);
+    setCombo(0);
+    setFever((value) => Math.max(0, value - 30));
+    setFeverActive(false);
+    setStatus({ text: "Time up! The monster escaped.", type: "bad" });
+    setFlash("bad");
+    playTone(120, 0.2, "sawtooth", 0.035);
+
+    setHp((currentHp) => {
+      const nextHp = currentHp - 1;
+
+      if (nextHp <= 0) {
+        window.setTimeout(endGame, 650);
+      } else {
+        window.setTimeout(() => {
+          setLevel((currentLevel) => {
+            const nextLevel = currentLevel + 1;
+            startRound(nextLevel);
+            return nextLevel;
+          });
+        }, 750);
+      }
+
+      return Math.max(0, nextHp);
+    });
+  }, [addMissedWord, endGame, round, roundLocked, startRound]);
+
+  const pressLetter = useCallback(
+    (id) => {
+      if (!round || roundLocked || gameState !== "playing") return;
+
+      const item = round.letters.find((letter) => letter.id === id);
+      if (!item || item.used) return;
+
+      const expected = round.word.word[round.targetIndex];
+
+      setRound((currentRound) => ({
+        ...currentRound,
+        letters: currentRound.letters.map((letter) =>
+          letter.id === id ? { ...letter, used: true } : letter,
+        ),
+      }));
+
+      if (item.bomb) {
+        handleMistake("Bomb! You hit a trap letter!");
+        return;
+      }
+
+      if (item.letter !== expected) {
+        handleMistake(`Wrong letter! Expected: ${expected.toUpperCase()}`);
+        return;
+      }
+
+      const nextIndex = round.targetIndex + 1;
+
+      setRound((currentRound) => ({
+        ...currentRound,
+        targetIndex: nextIndex,
+      }));
+      setCombo((currentCombo) => {
+        const nextCombo = currentCombo + 1;
+        setBestCombo((currentBest) => Math.max(currentBest, nextCombo));
+        return nextCombo;
+      });
+      setScore((value) => value + (feverActive ? 8 : 5) + Math.floor(combo / 5));
+      setFever((value) => {
+        const nextFever = Math.min(100, value + 8);
+
+        if (nextFever >= 100 && !feverActive) {
+          setFeverActive(true);
+          setStatus({ text: "FEVER MODE! Score boosted!", type: "bonus" });
+          playTone(1000, 0.13, "triangle", 0.045);
+        } else {
+          setStatus({ text: "Slash! Correct letter.", type: "good" });
+        }
+
+        return nextFever;
+      });
+      setFlash("good");
+      setSlashKey((key) => key + 1);
+      playTone(650 + nextIndex * 40, 0.07, "triangle", 0.035);
+
+      if (nextIndex >= round.word.word.length) {
+        window.setTimeout(completeWord, 120);
+      }
+    },
+    [
+      combo,
+      completeWord,
+      feverActive,
+      gameState,
+      handleMistake,
+      round,
+      roundLocked,
+    ],
+  );
+
+  useEffect(() => {
+    if (gameState !== "playing" || roundLocked) return undefined;
+
+    const timerId = window.setInterval(() => {
+      setTimeLeft((currentTime) => {
+        if (currentTime <= 1) {
+          window.clearInterval(timerId);
+          handleTimeout();
+          return 0;
+        }
+
+        return currentTime - 1;
+      });
+    }, 1000);
+
+    return () => window.clearInterval(timerId);
+  }, [gameState, handleTimeout, roundLocked]);
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (!round || gameState !== "playing" || roundLocked) return;
+
+      const key = event.key.toLowerCase();
+      if (!alphabet.includes(key)) return;
+
+      const match = round.letters.find((item) => !item.used && item.letter === key);
+
+      if (match) {
+        pressLetter(match.id);
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [gameState, pressLetter, round, roundLocked]);
+
+  const typedLetters = round?.word.word.slice(0, round.targetIndex).split("") ?? [];
+  const remainingSlots = round ? round.word.word.length - typedLetters.length : 0;
+  const isBoss = level % 5 === 0;
+  const timerPercent = Math.max(0, (timeLeft / maxTime) * 100);
+  const accuracy =
+    correctWords + mistakes > 0
+      ? Math.round((correctWords / (correctWords + mistakes)) * 100)
+      : 0;
+
+  return (
+    <section className="flex h-[calc(100svh-1rem)] max-h-[calc(100svh-1rem)] w-full max-w-5xl flex-col overflow-hidden rounded-[1.5rem] bg-slate-950 p-2 text-slate-50 shadow-2xl shadow-slate-950/30 sm:p-4">
+      <div className="relative mb-2">
+        <Link
+          className="absolute right-0 top-0 rounded-full border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-bold text-slate-200 transition hover:bg-slate-800"
+          to="/"
+        >
+          Home
+        </Link>
+        <div className="text-center">
+          <p className="text-[0.6rem] font-black uppercase tracking-[0.32em] text-cyan-300 sm:text-xs">
+            Training Dojo
+          </p>
+          <h1 className="text-3xl font-black tracking-tight text-cyan-300 drop-shadow-[0_0_18px_rgba(34,211,238,0.5)] sm:text-5xl">
+            Spelling Ninja
+          </h1>
+          <p className="text-[0.7rem] text-slate-400 sm:text-sm">
+            Click letters in order. Slice the word monster.
+          </p>
+        </div>
+      </div>
+
+      {gameState === "playing" ? (
+        <>
+          <div className="mb-1.5 grid grid-cols-6 gap-1.5">
+            {[
+              ["Score", score, "text-cyan-300"],
+              ["Combo", combo, "text-yellow-300"],
+              ["HP", `${hp}/${maxHp}`, "text-rose-300"],
+              ["Time", timeLeft, "text-green-300"],
+              ["Level", level, "text-purple-300"],
+              ["Fever", feverActive ? "FEVER" : `${fever}%`, "text-orange-300"],
+            ].map(([label, value, color]) => (
+              <div
+                className="rounded-lg border border-slate-700/70 bg-slate-900/90 px-1 py-1 text-center sm:rounded-2xl sm:px-2 sm:py-2"
+                key={label}
+              >
+                <p className="text-[0.48rem] font-bold uppercase text-slate-400 sm:text-xs">
+                  {label}
+                </p>
+                <p className={`text-sm font-black sm:text-2xl ${color}`}>
+                  {value}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mb-2 h-2 overflow-hidden rounded-full border border-slate-700 bg-slate-800">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-cyan-300 to-green-300 transition-all"
+              style={{ width: `${timerPercent}%` }}
+            />
+          </div>
+        </>
+      ) : null}
+
+      <div
+        className={[
+          "relative min-h-0 flex-1 overflow-hidden rounded-[1.25rem] border border-cyan-300/30 bg-slate-900 p-2 shadow-[0_0_34px_rgba(34,211,238,0.09)] sm:p-5",
+          flash === "good" ? "spelling-ninja-flash-good" : "",
+          flash === "bad" ? "spelling-ninja-flash-bad spelling-ninja-shake" : "",
+        ].join(" ")}
+      >
+        {gameState === "start" ? (
+          <div className="text-center">
+            <div className="spelling-ninja-dojo mb-4 rounded-3xl border border-slate-700/70 p-4">
+              <p className="text-[0.65rem] font-black uppercase tracking-[0.25em] text-slate-400">
+                Training Dojo
+              </p>
+              <div className="spelling-ninja-enemy spelling-ninja-enemy-compact mx-auto mt-5">
+                🥷
+              </div>
+              <h2 className="mt-4 text-3xl font-black text-yellow-300">
+                Ready?
+              </h2>
+              <p className="mx-auto mt-2 max-w-xl text-sm text-slate-300">
+                看提示，依序點擊字母拼出英文單字。答對斬擊怪物，點錯或踩炸彈會扣血。
+              </p>
+            </div>
+            <div className="flex flex-wrap justify-center gap-2">
+              <button
+                className="rounded-2xl bg-gradient-to-r from-cyan-300 to-green-300 px-7 py-3 text-base font-black text-slate-950 shadow-lg shadow-cyan-950/30 transition hover:-translate-y-0.5"
+                onClick={startGame}
+                type="button"
+              >
+                Start Game
+              </button>
+              <Link
+                className="rounded-2xl border border-slate-700 bg-slate-800 px-7 py-3 text-base font-black text-white transition hover:-translate-y-0.5"
+                to="/"
+              >
+                Home
+              </Link>
+            </div>
+          </div>
+        ) : null}
+
+        {gameState === "playing" && round ? (
+          <div>
+            <div className="spelling-ninja-dojo relative mb-1.5 overflow-hidden rounded-2xl border border-slate-700/70 p-2 text-center sm:rounded-3xl sm:p-4">
+              <p className="text-[0.55rem] font-black uppercase tracking-[0.22em] text-slate-400 sm:text-[0.65rem]">
+                {isBoss ? "Boss Word" : "Ninja Dojo"} | Level {level}
+              </p>
+
+              <div
+                className={[
+                  "spelling-ninja-stage mx-auto mt-1",
+                  isBoss ? "spelling-ninja-stage-boss" : "",
+                ].join(" ")}
+              >
+                <div
+                  className={[
+                    "spelling-ninja-enemy spelling-ninja-enemy-compact",
+                    isBoss ? "spelling-ninja-boss" : "",
+                  ].join(" ")}
+                >
+                  {isBoss ? "👹" : "👾"}
+                </div>
+                <div className="spelling-ninja-slash" key={slashKey} />
+              </div>
+
+              <div className="spelling-ninja-word-panel relative z-10 mt-4 w-full sm:mt-5">
+                <div className="text-xl font-black leading-tight text-yellow-300 sm:text-4xl">
+                  {round.word.meaning}
+                </div>
+                <p className="mt-1.5 text-[0.65rem] leading-relaxed text-slate-300 sm:text-xs">
+                  詞性：{round.word.type} | 字數：{round.word.word.length} | 下一個字母：
+                  {Math.min(round.targetIndex + 1, round.word.word.length)}/
+                  {round.word.word.length}
+                </p>
+              </div>
+
+              <div className="mx-auto mt-2 flex max-w-3xl flex-wrap justify-center gap-1 sm:gap-2">
+                {typedLetters.map((letter, index) => (
+                  <div
+                    className="grid size-7 place-items-center rounded-lg border-2 border-cyan-300 bg-cyan-400/20 text-base font-black text-cyan-200 sm:size-11 sm:text-2xl"
+                    key={`${letter}-${index}`}
+                  >
+                    {letter}
+                  </div>
+                ))}
+                {Array.from({ length: remainingSlots }).map((_, index) => (
+                  <div
+                    className="grid size-7 place-items-center rounded-lg border-2 border-slate-600 bg-slate-950/50 text-base font-black text-slate-500 sm:size-11 sm:text-2xl"
+                    key={`slot-${index}`}
+                  >
+                    ?
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div
+              className={[
+                "min-h-5 text-center text-xs font-black sm:text-lg",
+                status.type === "good" ? "text-green-300" : "",
+                status.type === "bad" ? "text-rose-300" : "",
+                status.type === "bonus" ? "text-yellow-300" : "",
+              ].join(" ")}
+            >
+              {status.text}
+            </div>
+
+            <div className="mt-1.5 rounded-2xl border border-slate-700 bg-slate-950/60 p-1.5 sm:p-3">
+              <div className="grid grid-cols-7 gap-1.5 sm:grid-cols-8 sm:gap-2">
+                {round.letters.map((item) => (
+                  <button
+                    className={[
+                      "min-h-8 rounded-lg border border-slate-600 text-base font-black uppercase text-white shadow-lg transition hover:-translate-y-1 disabled:translate-y-0 disabled:opacity-30 sm:min-h-12 sm:rounded-xl sm:text-2xl",
+                      item.bomb
+                        ? "animate-pulse bg-gradient-to-br from-red-900 to-red-500"
+                        : "bg-slate-800 hover:border-cyan-300 hover:bg-cyan-700",
+                      item.used && !item.bomb ? "bg-green-600" : "",
+                    ].join(" ")}
+                    disabled={item.used || roundLocked}
+                    key={item.id}
+                    onClick={() => pressLetter(item.id)}
+                    type="button"
+                  >
+                    {item.bomb ? "💣" : item.letter}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        {gameState === "over" ? (
+          <div className="text-center">
+            <div className="spelling-ninja-dojo mb-3 rounded-3xl border border-slate-700/70 p-4">
+              <p className="text-[0.65rem] font-black uppercase tracking-[0.25em] text-slate-400">
+                Training Complete
+              </p>
+              <div className="spelling-ninja-stage mx-auto mt-3">
+                <div className="spelling-ninja-enemy spelling-ninja-boss spelling-ninja-enemy-compact">
+                  💀
+                </div>
+              </div>
+              <h2 className="mt-5 text-3xl font-black text-rose-300">
+                Game Over
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+              {[
+                ["Score", score],
+                ["Level", level],
+                ["Best Combo", bestCombo],
+                ["Accuracy", `${accuracy}%`],
+              ].map(([label, value]) => (
+                <div className="rounded-2xl bg-slate-800 p-3" key={label}>
+                  <p className="text-[0.65rem] font-bold uppercase text-slate-400">
+                    {label}
+                  </p>
+                  <p className="mt-0.5 text-2xl font-black text-cyan-300">
+                    {value}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-3 rounded-2xl border border-slate-700 bg-slate-800/80 p-3 text-left">
+              <h3 className="text-base font-black text-cyan-200">
+                Words to Review
+              </h3>
+              {missedWords.length === 0 ? (
+                <p className="mt-1 text-sm text-slate-300">
+                  Perfect! 沒有錯過的單字。
+                </p>
+              ) : (
+                <ul className="mt-2 grid max-h-24 gap-1.5 overflow-y-auto">
+                  {missedWords.map((item) => (
+                    <li
+                      className="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+                      key={item.word}
+                    >
+                      <span className="font-black text-cyan-300">{item.word}</span>
+                      <span className="mx-2 text-slate-500">→</span>
+                      <span className="text-slate-300">{item.meaning}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
+              <button
+                className="rounded-2xl bg-gradient-to-r from-cyan-300 to-green-300 px-5 py-2.5 font-black text-slate-950 transition hover:-translate-y-0.5"
+                onClick={startGame}
+                type="button"
+              >
+                Play Again
+              </button>
+              <Link
+                className="rounded-2xl bg-slate-800 px-5 py-2.5 font-black text-white transition hover:-translate-y-0.5"
+                to="/"
+              >
+                Home
+              </Link>
+              <Link
+                className="rounded-2xl border border-slate-700 bg-slate-900 px-5 py-2.5 font-black text-slate-200 transition hover:-translate-y-0.5"
+                to="/words"
+              >
+                Words
+              </Link>
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      {gameState === "playing" ? null : (
+        <p className="mt-2 text-center text-xs text-slate-400">
+          Using {wordBank === fallbackWords ? "demo words" : "your saved words"}.
+          {defeatedWords.length > 0
+            ? ` Cleared ${defeatedWords.length} words.`
+            : ""}
+        </p>
+      )}
+    </section>
+  );
+}
+
+export default SpellingNinjaPage;

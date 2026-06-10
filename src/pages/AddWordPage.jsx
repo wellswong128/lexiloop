@@ -12,6 +12,20 @@ const initialFormValues = {
   tags: "",
 };
 
+function createDemoSuggestion(term) {
+  const normalizedTerm = term.trim();
+
+  return {
+    term: normalizedTerm,
+    definition: `A demo vocabulary card for "${normalizedTerm}". Replace this with the real definition before saving.`,
+    translation: "示範翻譯",
+    pronunciation: "",
+    partOfSpeech: "word",
+    example: `I am learning how to use "${normalizedTerm}" in a sentence.`,
+    tags: ["demo", "ai-fallback"],
+  };
+}
+
 async function readJsonResponse(response) {
   const text = await response.text();
 
@@ -56,6 +70,21 @@ function AddWordPage() {
       return;
     }
 
+    function applySuggestion(suggestion) {
+      setFormValues((currentValues) => ({
+        ...currentValues,
+        term: suggestion.term || currentValues.term,
+        definition: suggestion.definition || currentValues.definition,
+        translation: suggestion.translation || currentValues.translation,
+        pronunciation: suggestion.pronunciation || currentValues.pronunciation,
+        partOfSpeech: suggestion.partOfSpeech || currentValues.partOfSpeech,
+        example: suggestion.example || currentValues.example,
+        tags: Array.isArray(suggestion.tags)
+          ? suggestion.tags.join(", ")
+          : currentValues.tags,
+      }));
+    }
+
     try {
       setError("");
       setAiMessage("");
@@ -74,21 +103,14 @@ function AddWordPage() {
         throw new Error(data.error || "AI Fill failed.");
       }
 
-      setFormValues((currentValues) => ({
-        ...currentValues,
-        term: data.suggestion.term || currentValues.term,
-        definition: data.suggestion.definition || currentValues.definition,
-        translation: data.suggestion.translation || currentValues.translation,
-        pronunciation: data.suggestion.pronunciation || currentValues.pronunciation,
-        partOfSpeech: data.suggestion.partOfSpeech || currentValues.partOfSpeech,
-        example: data.suggestion.example || currentValues.example,
-        tags: Array.isArray(data.suggestion.tags)
-          ? data.suggestion.tags.join(", ")
-          : currentValues.tags,
-      }));
+      applySuggestion(data.suggestion);
       setAiMessage("AI suggestions were added. Review and edit before saving.");
     } catch (aiError) {
-      setError(aiError.message);
+      applySuggestion(createDemoSuggestion(term));
+      setError("");
+      setAiMessage(
+        `AI service was unavailable, so demo data was added instead. Reason: ${aiError.message}`,
+      );
     } finally {
       setIsAiLoading(false);
     }
