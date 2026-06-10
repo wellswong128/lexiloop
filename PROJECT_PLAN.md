@@ -1,6 +1,6 @@
-# LexiLoop Project Plan
+# LexiLand Project Plan
 
-LexiLoop is an English vocabulary memory app for learners who want to collect words, review them with flashcards, test themselves with quizzes, and gradually remember words through simple spaced repetition.
+LexiLand (力思樂園) is an English vocabulary learning app for learners who want to collect words, review them with flashcards, test themselves with quizzes, and gradually remember words through simple spaced repetition.
 
 The project will start as a local-only React app using `localStorage`. After the MVP is stable, the same data model can be moved to Supabase for login, cloud sync, and multi-device usage.
 

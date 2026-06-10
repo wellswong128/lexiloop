@@ -1,13 +1,13 @@
-# LexiLoop Prompts
+# LexiLand Prompts
 
-This file contains reusable prompts for building, debugging, refactoring, and extending LexiLoop in Cursor.
+This file contains reusable prompts for building, debugging, refactoring, and extending LexiLand in Cursor.
 
 Use one prompt at a time. Keep the task small, then test the result before asking for the next change.
 
 ## Project Role Prompt
 
 ```text
-You are the technical project manager and full-stack engineer for LexiLoop, an English vocabulary memory app.
+You are the technical project manager and full-stack engineer for LexiLand, an English vocabulary memory app.
 
 Tech stack:
 - React
@@ -33,7 +33,7 @@ Keep the tasks beginner-friendly and do not jump ahead to advanced features.
 ## Create Vite App Prompt
 
 ```text
-Please help me create the Vite React project for LexiLoop in the current folder.
+Please help me create the Vite React project for LexiLand in the current folder.
 
 Requirements:
 - React
@@ -58,7 +58,7 @@ Requirements:
 ## React Router Prompt
 
 ```text
-Please add React Router to LexiLoop.
+Please add React Router to LexiLand.
 
 Create these routes:
 - /
@@ -76,7 +76,7 @@ Create simple placeholder pages first. Add navigation links so I can click throu
 ## Folder Structure Prompt
 
 ```text
-Please organize the React project folder structure for LexiLoop.
+Please organize the React project folder structure for LexiLand.
 
 Use this structure:
 src/components
@@ -108,10 +108,10 @@ Keep the implementation simple and readable for a beginner.
 ## localStorage Prompt
 
 ```text
-Please implement localStorage support for LexiLoop.
+Please implement localStorage support for LexiLand.
 
 Requirements:
-- Use the key lexiloop.words.v1
+- Use the key lexiland.words.v1
 - Add loadWords
 - Add saveWords
 - Add resetWords
@@ -209,7 +209,7 @@ Requirements:
 ## Debug Prompt
 
 ```text
-Please debug the current LexiLoop issue.
+Please debug the current LexiLand issue.
 
 Problem:
 [Describe the problem here]
@@ -228,7 +228,7 @@ Please inspect the related files first, explain the likely cause, then make a sm
 ## Refactor Prompt
 
 ```text
-Please refactor the current LexiLoop code without changing behavior.
+Please refactor the current LexiLand code without changing behavior.
 
 Goals:
 - Improve readability
@@ -241,7 +241,7 @@ Goals:
 ## Supabase Planning Prompt
 
 ```text
-Please plan the Supabase upgrade for LexiLoop.
+Please plan the Supabase upgrade for LexiLand.
 
 Use DATA_MODEL.md as the source of truth.
 
@@ -258,7 +258,7 @@ Do not implement Supabase yet unless I ask.
 ## Supabase Implementation Prompt
 
 ```text
-Please start implementing Supabase for LexiLoop.
+Please start implementing Supabase for LexiLand.
 
 Requirements:
 - Add Supabase client setup
@@ -272,7 +272,7 @@ Requirements:
 ## AI Auto-Completion Planning Prompt
 
 ```text
-Please design the future AI auto-completion feature for LexiLoop.
+Please design the future AI auto-completion feature for LexiLand.
 
 Goal:
 When I type an English word, AI can suggest definition, translation, pronunciation, part of speech, example sentence, and tags.
@@ -291,7 +291,7 @@ Do not implement it yet.
 ## Vercel Deployment Prompt
 
 ```text
-Please prepare LexiLoop for Vercel deployment.
+Please prepare LexiLand for Vercel deployment.
 
 Requirements:
 - Confirm npm run build works
@@ -304,7 +304,7 @@ Requirements:
 ## Code Review Prompt
 
 ```text
-Please review the current LexiLoop code like a senior engineer.
+Please review the current LexiLand code like a senior engineer.
 
 Focus on:
 - Bugs

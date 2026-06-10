@@ -2,6 +2,7 @@ export const WORD_SOURCES = {
   MANUAL: "manual",
   IMPORT: "import",
   AI: "ai",
+  PHOTO: "photo",
 };
 
 export const REVIEW_RESULTS = {

@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import LanguageToggle from "../components/LanguageToggle.jsx";
 import { useLocale } from "../features/locale/LocaleContext.jsx";
 import { getDueWords } from "../features/review/reviewHelpers.js";
 import { useWordsContext } from "../features/words/WordsContext.jsx";
@@ -75,6 +74,20 @@ const gameTiles = [
     tone: "grammar",
     icon: "⚔️",
   },
+  {
+    key: "battleJet",
+    labelKey: "home.battleJet",
+    to: "/games/battle-jet",
+    tone: "jet",
+    icon: "✈️",
+  },
+  {
+    key: "penaltyTwelve",
+    labelKey: "home.penaltyTwelve",
+    to: "/games/penalty-twelve",
+    tone: "penalty",
+    icon: "⚽",
+  },
 ];
 
 function HomePage() {
@@ -96,11 +109,8 @@ function HomePage() {
 
       <div className="home-hero relative text-center">
         <p className="home-eyebrow">{t("home.eyebrow")}</p>
-        <h1 className="home-title">LexiLoop</h1>
-        <p className="home-description">{t("home.description")}</p>
-        <div className="mt-4 flex justify-center">
-          <LanguageToggle showInlineOptions />
-        </div>
+        <h1 className="home-title">{t("brand.name")}</h1>
+        <p className="home-description home-tagline">{t("brand.tagline")}</p>
       </div>
 
       <div className="home-stats relative mt-5 grid grid-cols-3 gap-2 sm:mt-8 sm:gap-4">

@@ -1,6 +1,15 @@
 @import "tailwindcss";
+@import "./styles/penalty-twelve.css";
+
+@theme {
+  --text-xs: 12pt;
+  --text-xs--line-height: 1.125rem;
+  --text-sm: 12pt;
+  --text-sm--line-height: 1.25rem;
+}
 
 :root {
+  --font-size-min: 12pt;
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -353,7 +362,7 @@ button:disabled {
 }
 
 .fishing-blast-prompt-label {
-  font-size: 11px;
+  font-size: 12pt;
   font-weight: 900;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -371,14 +380,14 @@ button:disabled {
 .fishing-blast-prompt-type,
 .fishing-blast-status {
   margin-top: 4px;
-  font-size: 12px;
+  font-size: 12pt;
   font-weight: 700;
   color: #dbeafe;
 }
 
 .fishing-blast-status {
   min-height: 18px;
-  font-size: 14px;
+  font-size: 12pt;
   font-weight: 900;
 }
 
@@ -518,7 +527,7 @@ button:disabled {
   z-index: 4;
   width: 64px;
   transform: translateY(-50%);
-  font-size: 16px;
+  font-size: 12pt;
   font-weight: 900;
   line-height: 1.1;
   color: white;
@@ -625,7 +634,7 @@ button:disabled {
   justify-content: center;
   border-radius: 16px;
   padding: 12px 20px;
-  font-size: 15px;
+  font-size: 12pt;
   font-weight: 900;
   transition: 0.15s;
 }
@@ -852,7 +861,7 @@ button:disabled {
 }
 
 .word-kart-prompt-label {
-  font-size: 11px;
+  font-size: 12pt;
   font-weight: 900;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -870,14 +879,14 @@ button:disabled {
 .word-kart-prompt-type,
 .word-kart-status {
   margin-top: 4px;
-  font-size: 12px;
+  font-size: 12pt;
   font-weight: 800;
   color: #dbeafe;
 }
 
 .word-kart-status {
   min-height: 18px;
-  font-size: 14px;
+  font-size: 12pt;
   font-weight: 900;
 }
 
@@ -971,7 +980,7 @@ button:disabled {
   border-radius: 14px;
   background: linear-gradient(180deg, var(--gate-a), var(--gate-b));
   padding: 5px;
-  font-size: clamp(12px, 2.5vw, 18px);
+  font-size: clamp(12pt, 2.5vw, 18px);
   font-weight: 900;
   line-height: 1.1;
   text-align: center;
@@ -1020,7 +1029,7 @@ button:disabled {
   border-radius: 14px;
   background: rgba(15, 23, 42, 0.72);
   padding: 10px 4px;
-  font-size: 14px;
+  font-size: 12pt;
   font-weight: 900;
   color: #e0f2fe;
   box-shadow: 0 8px 18px rgba(2, 6, 23, 0.24);
@@ -1180,7 +1189,7 @@ button:disabled {
   justify-content: center;
   border-radius: 16px;
   padding: 12px 20px;
-  font-size: 15px;
+  font-size: 12pt;
   font-weight: 900;
   transition: 0.15s;
 }
@@ -1465,7 +1474,7 @@ button:disabled {
 }
 
 .grammar-arena-prompt-label {
-  font-size: 11px;
+  font-size: 12pt;
   font-weight: 900;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -1489,14 +1498,14 @@ button:disabled {
   background: rgba(96, 165, 250, 0.18);
   color: #dbeafe;
   border: 1px solid rgba(191, 219, 254, 0.28);
-  font-size: 11px;
+  font-size: 12pt;
   font-weight: 900;
 }
 
 .grammar-arena-status {
   min-height: 18px;
   margin-top: 4px;
-  font-size: 13px;
+  font-size: 12pt;
   font-weight: 900;
   color: #e0f2fe;
 }
@@ -1790,7 +1799,7 @@ button:disabled {
 
 .grammar-arena-hp-name {
   margin-bottom: 4px;
-  font-size: 10px;
+  font-size: 12pt;
   font-weight: 900;
   text-align: left;
   color: #bfdbfe;
@@ -1832,7 +1841,7 @@ button:disabled {
   border-radius: 16px;
   background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.96));
   color: #f8fafc;
-  font-size: clamp(14px, 3.5vw, 20px);
+  font-size: clamp(12pt, 3.5vw, 20px);
   font-weight: 900;
   cursor: pointer;
   transition: 0.15s;
@@ -1869,7 +1878,7 @@ button:disabled {
   justify-content: center;
   border-radius: 18px;
   padding: 12px 20px;
-  font-size: 15px;
+  font-size: 12pt;
   font-weight: 900;
   transition: 0.15s;
 }
@@ -2031,11 +2040,11 @@ button:disabled {
   .grammar-arena-answer-btn {
     min-height: 36px;
     padding: 6px 8px;
-    font-size: 14px;
+    font-size: 12pt;
   }
 
   .grammar-arena-sentence {
-    font-size: clamp(14px, 4vw, 24px);
+    font-size: clamp(12pt, 4vw, 24px);
   }
 }
 
@@ -2076,7 +2085,7 @@ button:disabled {
 
 .home-eyebrow {
   margin-bottom: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 12pt;
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -2101,9 +2110,14 @@ button:disabled {
   color: #475569;
 }
 
+.home-tagline {
+  font-weight: 800;
+  color: #1d4ed8;
+}
+
 .home-section-label {
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 12pt;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2162,7 +2176,7 @@ button:disabled {
 
 .home-stat-label {
   margin-top: 0.2rem;
-  font-size: clamp(0.7rem, 2.8vw, 0.95rem);
+  font-size: clamp(12pt, 2.8vw, 1.05rem);
   font-weight: 700;
   color: #334155;
 }
@@ -2175,7 +2189,7 @@ button:disabled {
   border-radius: 999px;
   padding: 0.75rem 1rem;
   text-align: center;
-  font-size: clamp(0.875rem, 3.2vw, 1rem);
+  font-size: clamp(12pt, 3.2vw, 1rem);
   font-weight: 800;
   transition:
     transform 0.15s ease,
@@ -2274,18 +2288,18 @@ button:disabled {
 .home-game-name {
   position: relative;
   z-index: 1;
-  font-size: clamp(0.95rem, 3.6vw, 1.05rem);
+  font-size: clamp(12pt, 3.6vw, 1.05rem);
   font-weight: 800;
   line-height: 1.2;
 }
 
 @media (min-width: 640px) {
   .home-eyebrow {
-    font-size: 0.875rem;
+    font-size: 12pt;
   }
 
   .home-section-label {
-    font-size: 0.875rem;
+    font-size: 12pt;
   }
 
   .home-stat-card {
@@ -2306,5 +2320,1151 @@ button:disabled {
 
   .home-game-icon {
     font-size: 1.85rem;
+  }
+}
+
+.battle-jet-app {
+  background:
+    radial-gradient(circle at top, #dff8ff 0%, #8fdfff 38%, #3b8ec7 65%, #1d4f78 100%);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
+}
+
+.battle-jet-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.battle-jet-screen {
+  display: none;
+  min-height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.battle-jet-screen.active {
+  display: flex;
+}
+
+.battle-jet-screen--playing.active {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.battle-jet-card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 28px;
+  padding: 28px 22px;
+  text-align: center;
+  border: 4px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 12px 0 rgba(0, 0, 0, 0.18),
+    0 20px 34px rgba(0, 0, 0, 0.22);
+}
+
+.battle-jet-title {
+  margin: 0 0 8px;
+  font-size: clamp(1.75rem, 7vw, 2.25rem);
+  line-height: 1.1;
+  color: #0d62bd;
+  text-shadow: 2px 3px 0 #c2edff;
+  letter-spacing: 1px;
+  font-weight: 1000;
+}
+
+.battle-jet-subtitle {
+  font-size: 1.15rem;
+  color: #198242;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.battle-jet-intro-icon {
+  font-size: 5rem;
+  margin: 16px 0;
+  animation: battleJetIntroFloat 0.9s infinite alternate ease-in-out;
+}
+
+.battle-jet-note {
+  font-size: 12pt;
+  color: #4d6878;
+  line-height: 1.7;
+  margin: 12px 0 22px;
+}
+
+.battle-jet-btn {
+  border: none;
+  padding: 15px 32px;
+  border-radius: 999px;
+  background: linear-gradient(#ffe066, #ff9f24);
+  color: #5a2c00;
+  font-size: 1.15rem;
+  font-weight: 1000;
+  cursor: pointer;
+  box-shadow: 0 7px 0 #bf6c00, 0 11px 18px rgba(0, 0, 0, 0.2);
+}
+
+.battle-jet-btn:active {
+  transform: translateY(5px);
+  box-shadow: 0 2px 0 #bf6c00, 0 5px 12px rgba(0, 0, 0, 0.18);
+}
+
+.battle-jet-secondary-btn {
+  display: inline-flex;
+  margin-top: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 2px solid #d7f3ff;
+  padding: 10px 20px;
+  font-size: 12pt;
+  font-weight: 900;
+  color: #16496d;
+  background: #fff;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+}
+
+.battle-jet-layout {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.battle-jet-layout--playing {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  gap: 6px;
+}
+
+.battle-jet-top-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 18px;
+  padding: 10px 12px;
+  font-size: 12pt;
+  font-weight: 1000;
+  color: #16496d;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.13);
+  z-index: 20;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.battle-jet-sound-toggle {
+  border: 2px solid #d7f3ff;
+  background: #ffffff;
+  color: #16496d;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 12pt;
+  font-weight: 1000;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+}
+
+.battle-jet-sound-toggle:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+}
+
+.battle-jet-mission-panel {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20px;
+  padding: 9px 12px;
+  text-align: center;
+  border: 3px solid #d7f3ff;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.1);
+  z-index: 20;
+  flex-shrink: 0;
+}
+
+.battle-jet-mission-label {
+  font-size: 12pt;
+  color: #668397;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.battle-jet-question-word {
+  font-size: clamp(1.75rem, 7vw, 2.125rem);
+  color: #0d62bd;
+  font-weight: 1000;
+  line-height: 1.05;
+}
+
+.battle-jet-battlefield {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  border-radius: 26px;
+  overflow: hidden;
+  background:
+    linear-gradient(#aeeeff 0%, #65cfff 54%, #2d85bf 75%, #246a9c 100%);
+  box-shadow:
+    inset 0 0 0 4px rgba(255, 255, 255, 0.22),
+    0 8px 0 rgba(0, 0, 0, 0.14);
+}
+
+.battle-jet-sun {
+  position: absolute;
+  top: 24px;
+  right: 42px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #ffe96d;
+  box-shadow: 0 0 34px rgba(255, 233, 109, 0.85);
+  z-index: 1;
+}
+
+.battle-jet-cloud {
+  position: absolute;
+  width: 82px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    24px 4px 0 rgba(255, 255, 255, 0.75),
+    -18px 7px 0 rgba(255, 255, 255, 0.75);
+  z-index: 2;
+  animation: battleJetCloudMove 12s linear infinite;
+}
+
+.battle-jet-cloud.one {
+  top: 62px;
+  left: 32px;
+}
+
+.battle-jet-cloud.two {
+  top: 128px;
+  left: 70%;
+  transform: scale(0.78);
+  animation-duration: 16s;
+}
+
+.battle-jet-cloud.three {
+  top: 215px;
+  left: 20%;
+  transform: scale(0.62);
+  animation-duration: 19s;
+}
+
+.battle-jet-mountains {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 168px;
+  height: 110px;
+  background:
+    linear-gradient(135deg, transparent 0 49%, #3a7594 50% 100%) 0 20px / 150px 90px repeat-x,
+    linear-gradient(45deg, transparent 0 49%, #2b607d 50% 100%) 70px 35px / 170px 90px repeat-x;
+  opacity: 0.55;
+  z-index: 3;
+}
+
+.battle-jet-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 176px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 0,
+      rgba(255, 255, 255, 0.06) 34px,
+      rgba(0, 0, 0, 0.06) 34px,
+      rgba(0, 0, 0, 0.06) 68px
+    ),
+    linear-gradient(#4ea84a, #1f742d);
+  border-top: 6px solid rgba(255, 255, 255, 0.32);
+  z-index: 9;
+}
+
+.battle-jet-city {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 176px;
+  height: 58px;
+  background: linear-gradient(to top, #25455d, #335f7b);
+  clip-path: polygon(
+    0 100%,
+    0 45%,
+    5% 45%,
+    5% 24%,
+    12% 24%,
+    12% 58%,
+    19% 58%,
+    19% 35%,
+    25% 35%,
+    25% 62%,
+    32% 62%,
+    32% 20%,
+    39% 20%,
+    39% 50%,
+    46% 50%,
+    46% 30%,
+    54% 30%,
+    54% 66%,
+    61% 66%,
+    61% 42%,
+    68% 42%,
+    68% 25%,
+    76% 25%,
+    76% 60%,
+    83% 60%,
+    83% 38%,
+    91% 38%,
+    91% 52%,
+    100% 52%,
+    100% 100%
+  );
+  z-index: 7;
+  opacity: 0.7;
+}
+
+.battle-jet-radar {
+  position: absolute;
+  left: 28px;
+  bottom: 112px;
+  width: 52px;
+  height: 52px;
+  border: 5px solid #2b3943;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(70, 255, 116, 0.35) 0 16%, transparent 17%),
+    conic-gradient(rgba(70, 255, 116, 0.65), transparent 32%, transparent);
+  z-index: 15;
+  animation: battleJetRadarSpin 1.3s linear infinite;
+}
+
+.battle-jet-radar::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -42px;
+  width: 12px;
+  height: 46px;
+  transform: translateX(-50%);
+  background: #2b3943;
+  border-radius: 8px;
+}
+
+.battle-jet-launcher {
+  position: absolute;
+  left: 50%;
+  bottom: 58px;
+  width: 132px;
+  height: 70px;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+.battle-jet-launcher-base {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 122px;
+  height: 34px;
+  transform: translateX(-50%);
+  border-radius: 18px 18px 10px 10px;
+  background: linear-gradient(#566777, #263847);
+  border: 4px solid #1d2b35;
+}
+
+.battle-jet-launcher-wheel {
+  position: absolute;
+  bottom: -10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #111c24;
+  border: 5px solid #5a6a76;
+  z-index: 2;
+}
+
+.battle-jet-launcher-wheel.left {
+  left: 18px;
+}
+
+.battle-jet-launcher-wheel.right {
+  right: 18px;
+}
+
+.battle-jet-launcher-tube {
+  position: absolute;
+  left: 50%;
+  bottom: 35px;
+  width: 30px;
+  height: 78px;
+  transform: translateX(-50%) rotate(-8deg);
+  transform-origin: bottom center;
+  border-radius: 16px 16px 8px 8px;
+  background: linear-gradient(90deg, #2f4658, #7892a4, #2f4658);
+  border: 4px solid #1d2b35;
+}
+
+.battle-jet-launcher.fire .battle-jet-launcher-tube {
+  animation: battleJetLauncherKick 0.25s ease-out;
+}
+
+.battle-jet-launch-flash {
+  position: absolute;
+  left: 50%;
+  bottom: 126px;
+  width: 26px;
+  height: 26px;
+  transform: translateX(-50%) scale(0);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    white 0 18%,
+    #ffe066 19% 45%,
+    #ff6b00 46% 75%,
+    transparent 76%
+  );
+  z-index: 22;
+  opacity: 0;
+}
+
+.battle-jet-launch-flash.show {
+  animation: battleJetFlashPop 0.28s ease-out;
+}
+
+.battle-jet-jet {
+  position: absolute;
+  left: -150px;
+  top: 100px;
+  width: 118px;
+  height: 56px;
+  z-index: 14;
+  filter: drop-shadow(0 7px 4px rgba(0, 0, 0, 0.28));
+  transform-origin: center center;
+}
+
+.battle-jet-jet-body {
+  position: absolute;
+  left: 16px;
+  top: 20px;
+  width: 82px;
+  height: 18px;
+  border-radius: 50% 12px 12px 50%;
+  background: linear-gradient(#dfe8ef, #6f8796);
+  border: 3px solid #273947;
+}
+
+.battle-jet-jet-nose {
+  position: absolute;
+  right: 2px;
+  top: 21px;
+  width: 28px;
+  height: 16px;
+  background: #c73232;
+  border-radius: 0 50% 50% 0;
+  border: 3px solid #273947;
+  border-left: none;
+}
+
+.battle-jet-jet-cockpit {
+  position: absolute;
+  left: 60px;
+  top: 12px;
+  width: 24px;
+  height: 16px;
+  border-radius: 16px 16px 4px 4px;
+  background: #78d8ff;
+  border: 3px solid #273947;
+}
+
+.battle-jet-jet-wing {
+  position: absolute;
+  left: 38px;
+  top: 31px;
+  width: 38px;
+  height: 26px;
+  background: #526d80;
+  clip-path: polygon(0 0, 100% 0, 24% 100%);
+  border-radius: 4px;
+}
+
+.battle-jet-jet-tail {
+  position: absolute;
+  left: 8px;
+  top: 7px;
+  width: 26px;
+  height: 25px;
+  background: #526d80;
+  clip-path: polygon(0 100%, 100% 100%, 28% 0);
+}
+
+.battle-jet-jet-flame {
+  position: absolute;
+  left: -10px;
+  top: 23px;
+  width: 24px;
+  height: 12px;
+  border-radius: 50% 0 0 50%;
+  background: linear-gradient(90deg, #ff2b00, #ffd338, transparent);
+  animation: battleJetFlameFlicker 0.12s infinite alternate;
+}
+
+.battle-jet-jet.reverse {
+  transform: scaleX(-1);
+}
+
+.battle-jet-jet.exploding {
+  opacity: 0;
+}
+
+.battle-jet-jet.fly-lr {
+  animation: battleJetFlyLR 5.8s linear infinite;
+}
+
+.battle-jet-jet.fly-rl {
+  animation: battleJetFlyRL 5.8s linear infinite;
+}
+
+.battle-jet-jet.fly-diagonal-up {
+  animation: battleJetFlyDiagonalUp 5.8s linear infinite;
+}
+
+.battle-jet-jet.fly-diagonal-down {
+  animation: battleJetFlyDiagonalDown 5.8s linear infinite;
+}
+
+.battle-jet-jet.fly-wave {
+  animation: battleJetFlyWave 6.5s linear infinite;
+}
+
+.battle-jet-missile {
+  position: absolute;
+  left: 50%;
+  bottom: 118px;
+  width: 22px;
+  height: 58px;
+  transform: translateX(-50%) rotate(0deg);
+  z-index: 18;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.battle-jet-missile-body {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 18px;
+  height: 40px;
+  transform: translateX(-50%);
+  border-radius: 12px 12px 6px 6px;
+  background: linear-gradient(90deg, #ffffff, #b7c8d6);
+  border: 3px solid #2c3d4a;
+}
+
+.battle-jet-missile-head {
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  width: 18px;
+  height: 18px;
+  transform: translateX(-50%);
+  background: #e43e38;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  border-radius: 5px;
+}
+
+.battle-jet-missile-fin {
+  position: absolute;
+  bottom: 2px;
+  width: 14px;
+  height: 16px;
+  background: #e43e38;
+}
+
+.battle-jet-missile-fin.left {
+  left: 0;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.battle-jet-missile-fin.right {
+  right: 0;
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+}
+
+.battle-jet-missile-fire {
+  position: absolute;
+  left: 50%;
+  bottom: -16px;
+  width: 18px;
+  height: 26px;
+  transform: translateX(-50%);
+  border-radius: 0 0 50% 50%;
+  background: radial-gradient(
+    circle,
+    #fff 0 15%,
+    #ffe066 16% 42%,
+    #ff6b00 43% 72%,
+    transparent 73%
+  );
+  animation: battleJetFlameFlicker 0.08s infinite alternate;
+}
+
+.battle-jet-smoke-trail {
+  position: absolute;
+  left: 50%;
+  bottom: 130px;
+  width: 10px;
+  height: 0;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.82),
+    rgba(255, 255, 255, 0)
+  );
+  z-index: 12;
+  opacity: 0;
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.battle-jet-smoke-trail.show {
+  animation: battleJetSmokeShow 0.9s ease-out;
+}
+
+.battle-jet-explosion {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34px;
+  height: 34px;
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    white 0 10%,
+    #fff173 11% 24%,
+    #ff9d00 25% 48%,
+    #e33218 49% 70%,
+    rgba(40, 40, 40, 0.75) 71% 100%
+  );
+  z-index: 32;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.battle-jet-explosion.show {
+  animation: battleJetExplode 0.72s ease-out forwards;
+}
+
+.battle-jet-jet-part {
+  position: absolute;
+  z-index: 31;
+  pointer-events: none;
+  opacity: 0;
+  filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.25));
+}
+
+.battle-jet-jet-part.show {
+  animation: battleJetPartBurst 0.62s ease-out forwards;
+}
+
+.battle-jet-jet-part.body {
+  width: 48px;
+  height: 16px;
+  border-radius: 50% 12px 12px 50%;
+  background: linear-gradient(#dfe8ef, #6f8796);
+  border: 3px solid #273947;
+}
+
+.battle-jet-jet-part.wing {
+  width: 38px;
+  height: 24px;
+  background: #526d80;
+  clip-path: polygon(0 0, 100% 0, 24% 100%);
+}
+
+.battle-jet-jet-part.tail {
+  width: 26px;
+  height: 25px;
+  background: #526d80;
+  clip-path: polygon(0 100%, 100% 100%, 28% 0);
+}
+
+.battle-jet-jet-part.nose {
+  width: 28px;
+  height: 16px;
+  background: #c73232;
+  border-radius: 0 50% 50% 0;
+  border: 3px solid #273947;
+}
+
+.battle-jet-jet-part.cockpit {
+  width: 24px;
+  height: 16px;
+  border-radius: 16px 16px 4px 4px;
+  background: #78d8ff;
+  border: 3px solid #273947;
+}
+
+.battle-jet-debris {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #333;
+  border-radius: 2px;
+  z-index: 30;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.battle-jet-debris.show {
+  animation: battleJetDebrisFly 0.75s ease-out forwards;
+}
+
+.battle-jet-message {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 86%;
+  transform: translateX(-50%);
+  padding: 12px;
+  border-radius: 20px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.97);
+  border: 4px solid white;
+  box-shadow:
+    0 8px 0 rgba(0, 0, 0, 0.13),
+    0 14px 28px rgba(0, 0, 0, 0.18);
+  z-index: 40;
+  display: none;
+}
+
+.battle-jet-message.show {
+  display: block;
+  animation: battleJetPop 0.25s ease-out;
+}
+
+.battle-jet-result-word {
+  font-size: clamp(1.75rem, 7vw, 2.125rem);
+  font-weight: 1000;
+  margin-bottom: 4px;
+}
+
+.battle-jet-result-word.hit-text {
+  color: #12a83b;
+  text-shadow: 2px 2px 0 #bfffc9;
+}
+
+.battle-jet-result-word.miss-text {
+  color: #e03d34;
+  text-shadow: 2px 2px 0 #ffd1cc;
+}
+
+.battle-jet-answer-text {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #143047;
+}
+
+.battle-jet-combo-text {
+  margin-top: 4px;
+  font-size: 12pt;
+  color: #ff8a00;
+  font-weight: 1000;
+}
+
+.battle-jet-options-panel {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  z-index: 30;
+  flex-shrink: 0;
+}
+
+.battle-jet-option {
+  border: 3px solid white;
+  border-radius: 16px;
+  padding: 13px 8px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #16324a;
+  font-size: 1rem;
+  line-height: 1.2;
+  font-weight: 1000;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+}
+
+.battle-jet-option:hover {
+  background: #fff4c4;
+}
+
+.battle-jet-option:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.14);
+}
+
+.battle-jet-option.selected {
+  background: #ffe16d;
+  border-color: #ff9416;
+  transform: scale(1.02);
+}
+
+.battle-jet-option.correct {
+  background: #89ef91;
+  border-color: #12a538;
+}
+
+.battle-jet-option.wrong {
+  background: #ff9999;
+  border-color: #dd3333;
+}
+
+.battle-jet-option.disabled {
+  pointer-events: none;
+}
+
+.battle-jet-end-score {
+  font-size: clamp(2.5rem, 10vw, 3.375rem);
+  color: #0f64c4;
+  font-weight: 1000;
+  margin: 12px 0;
+}
+
+.battle-jet-rank {
+  font-size: 1.6rem;
+  color: #ff8500;
+  font-weight: 1000;
+  margin: 10px 0 18px;
+}
+
+.battle-jet-final-points {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #1d4f6f;
+}
+
+.home-game-jet {
+  background: linear-gradient(145deg, #0c4a6e 0%, #0284c7 55%, #38bdf8 100%);
+  color: #e0f2fe;
+}
+
+@keyframes battleJetIntroFloat {
+  from {
+    transform: translateY(0) rotate(-3deg);
+  }
+  to {
+    transform: translateY(-12px) rotate(3deg);
+  }
+}
+
+@keyframes battleJetCloudMove {
+  from {
+    margin-left: 0;
+  }
+  to {
+    margin-left: 40px;
+  }
+}
+
+@keyframes battleJetRadarSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes battleJetLauncherKick {
+  0% {
+    transform: translateX(-50%) rotate(-8deg);
+  }
+  45% {
+    transform: translateX(-50%) rotate(-15deg) translateY(5px);
+  }
+  100% {
+    transform: translateX(-50%) rotate(-8deg);
+  }
+}
+
+@keyframes battleJetFlashPop {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) scale(2.8);
+  }
+}
+
+@keyframes battleJetFlameFlicker {
+  from {
+    opacity: 0.65;
+    transform: scaleX(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1.15);
+  }
+}
+
+@keyframes battleJetFlyLR {
+  0% {
+    left: -150px;
+    top: 92px;
+  }
+  100% {
+    left: calc(100% + 150px);
+    top: 130px;
+  }
+}
+
+@keyframes battleJetFlyRL {
+  0% {
+    left: calc(100% + 150px);
+    top: 118px;
+  }
+  100% {
+    left: -150px;
+    top: 86px;
+  }
+}
+
+@keyframes battleJetFlyDiagonalUp {
+  0% {
+    left: -150px;
+    top: 230px;
+    transform: rotate(-10deg);
+  }
+  100% {
+    left: calc(100% + 150px);
+    top: 72px;
+    transform: rotate(-10deg);
+  }
+}
+
+@keyframes battleJetFlyDiagonalDown {
+  0% {
+    left: calc(100% + 150px);
+    top: 70px;
+    transform: scaleX(-1) rotate(-9deg);
+  }
+  100% {
+    left: -150px;
+    top: 230px;
+    transform: scaleX(-1) rotate(-9deg);
+  }
+}
+
+@keyframes battleJetFlyWave {
+  0% {
+    left: -150px;
+    top: 122px;
+  }
+  25% {
+    top: 72px;
+  }
+  50% {
+    top: 140px;
+  }
+  75% {
+    top: 92px;
+  }
+  100% {
+    left: calc(100% + 150px);
+    top: 122px;
+  }
+}
+
+@keyframes battleJetSmokeShow {
+  0% {
+    opacity: 0;
+    height: 0;
+  }
+  25% {
+    opacity: 0.92;
+    height: 180px;
+  }
+  100% {
+    opacity: 0;
+    height: 70px;
+  }
+}
+
+@keyframes battleJetExplode {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.2);
+    filter: brightness(1.4);
+  }
+  45% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(3.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(4.6);
+    filter: brightness(0.75);
+  }
+}
+
+@keyframes battleJetPartBurst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform:
+      translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot))
+      scale(0.72);
+  }
+}
+
+@keyframes battleJetDebrisFly {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) rotate(420deg);
+  }
+}
+
+@keyframes battleJetPop {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.75);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+.battle-jet-app--playing {
+  padding: 6px;
+  border-radius: 1rem;
+}
+
+@media (max-width: 640px) {
+  .battle-jet-layout--playing {
+    gap: 4px;
+  }
+
+  .battle-jet-top-bar {
+    padding: 6px 8px;
+    font-size: 12pt;
+    gap: 4px;
+    border-radius: 14px;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.13);
+  }
+
+  .battle-jet-sound-toggle {
+    padding: 4px 8px;
+    font-size: 12pt;
+  }
+
+  .battle-jet-mission-panel {
+    padding: 6px 10px;
+    border-radius: 16px;
+    border-width: 2px;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .battle-jet-mission-label {
+    font-size: 12pt;
+    margin-bottom: 0;
+  }
+
+  .battle-jet-question-word {
+    font-size: 1.45rem;
+  }
+
+  .battle-jet-battlefield {
+    border-radius: 18px;
+    box-shadow:
+      inset 0 0 0 3px rgba(255, 255, 255, 0.22),
+      0 5px 0 rgba(0, 0, 0, 0.14);
+  }
+
+  .battle-jet-ground {
+    height: 120px;
+  }
+
+  .battle-jet-city {
+    bottom: 120px;
+    height: 42px;
+  }
+
+  .battle-jet-mountains {
+    bottom: 120px;
+    height: 72px;
+  }
+
+  .battle-jet-radar {
+    left: 14px;
+    bottom: 78px;
+    transform: scale(0.72);
+  }
+
+  .battle-jet-launcher {
+    bottom: 42px;
+    transform: translateX(-50%) scale(0.78);
+  }
+
+  .battle-jet-sun {
+    top: 14px;
+    right: 24px;
+    width: 42px;
+    height: 42px;
+  }
+
+  .battle-jet-cloud.one {
+    top: 42px;
+    left: 18px;
+    transform: scale(0.75);
+  }
+
+  .battle-jet-cloud.two {
+    top: 78px;
+    transform: scale(0.6);
+  }
+
+  .battle-jet-cloud.three {
+    top: 120px;
+    transform: scale(0.5);
+  }
+
+  .battle-jet-options-panel {
+    gap: 6px;
+  }
+
+  .battle-jet-option {
+    font-size: 12pt;
+    padding: 9px 5px;
+    border-radius: 12px;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.14);
+  }
+
+  .battle-jet-result-word {
+    font-size: 1.35rem;
+  }
+
+  .battle-jet-answer-text {
+    font-size: 12pt;
   }
 }

@@ -1,0 +1,936 @@
+.penalty-twelve-app {
+  background:
+    radial-gradient(circle at top, #e4fbff 0%, #93ddff 32%, #5bc25b 33%, #16802f 100%);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
+}
+
+.penalty-twelve-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.penalty-twelve-screen {
+  display: none;
+  min-height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.penalty-twelve-screen.active {
+  display: flex;
+}
+
+.penalty-twelve-screen--playing.active {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.penalty-twelve-card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 28px;
+  padding: 28px 22px;
+  text-align: center;
+  border: 4px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 12px 0 rgba(0, 0, 0, 0.14),
+    0 20px 34px rgba(0, 0, 0, 0.2);
+}
+
+.penalty-twelve-title {
+  margin: 0 0 8px;
+  font-size: clamp(1.85rem, 7vw, 2.5rem);
+  color: #0d62bd;
+  text-shadow: 2px 3px 0 #c2edff;
+  letter-spacing: 1px;
+  font-weight: 1000;
+}
+
+.penalty-twelve-subtitle {
+  font-size: 1.15rem;
+  color: #13803d;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.penalty-twelve-intro-ball {
+  font-size: 4.8rem;
+  margin: 16px 0;
+  animation: penaltyTwelveIntroBounce 0.85s infinite alternate ease-in-out;
+}
+
+.penalty-twelve-note {
+  font-size: 12pt;
+  color: #4d6878;
+  line-height: 1.6;
+  margin: 12px 0 22px;
+}
+
+.penalty-twelve-btn {
+  border: none;
+  padding: 15px 32px;
+  border-radius: 999px;
+  background: linear-gradient(#ffe066, #ff9f24);
+  color: #5a2c00;
+  font-size: 1.15rem;
+  font-weight: 1000;
+  cursor: pointer;
+  box-shadow: 0 7px 0 #bf6c00, 0 11px 18px rgba(0, 0, 0, 0.2);
+}
+
+.penalty-twelve-btn:active {
+  transform: translateY(5px);
+  box-shadow: 0 2px 0 #bf6c00, 0 5px 12px rgba(0, 0, 0, 0.18);
+}
+
+.penalty-twelve-secondary-btn {
+  display: inline-flex;
+  margin-top: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 2px solid #d7f3ff;
+  padding: 10px 20px;
+  font-size: 12pt;
+  font-weight: 900;
+  color: #16496d;
+  background: #fff;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+}
+
+.penalty-twelve-layout {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.penalty-twelve-layout--playing {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  gap: 6px;
+}
+
+.penalty-twelve-top-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 18px;
+  padding: 10px 12px;
+  font-size: 12pt;
+  font-weight: 1000;
+  color: #16496d;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.penalty-twelve-sound-toggle {
+  border: 2px solid #d7f3ff;
+  background: #ffffff;
+  color: #16496d;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 12pt;
+  font-weight: 1000;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+}
+
+.penalty-twelve-sound-toggle:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+}
+
+.penalty-twelve-word-panel {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20px;
+  padding: 10px 12px;
+  text-align: center;
+  border: 3px solid #d7f3ff;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.1);
+  z-index: 20;
+  flex-shrink: 0;
+}
+
+.penalty-twelve-word-label {
+  font-size: 12pt;
+  color: #668397;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.penalty-twelve-english-word {
+  font-size: clamp(1.65rem, 7vw, 2.25rem);
+  color: #0d62bd;
+  font-weight: 1000;
+  line-height: 1.05;
+}
+
+.penalty-twelve-stadium {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  border-radius: 26px;
+  overflow: hidden;
+  background:
+    linear-gradient(#acecff 0%, #76cdf3 23%, transparent 24%),
+    linear-gradient(#5ecf61 0%, #168131 100%);
+  perspective: 860px;
+  box-shadow:
+    inset 0 0 0 4px rgba(255, 255, 255, 0.22),
+    0 8px 0 rgba(0, 0, 0, 0.14);
+}
+
+.penalty-twelve-cloud {
+  position: absolute;
+  top: 24px;
+  width: 72px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow:
+    23px 4px 0 rgba(255, 255, 255, 0.72),
+    -18px 7px 0 rgba(255, 255, 255, 0.72);
+  z-index: 1;
+}
+
+.penalty-twelve-cloud.one {
+  left: 46px;
+}
+
+.penalty-twelve-cloud.two {
+  right: 62px;
+  top: 55px;
+  transform: scale(0.78);
+}
+
+.penalty-twelve-stand {
+  position: absolute;
+  top: 78px;
+  left: 50%;
+  width: 100%;
+  height: 72px;
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(14, 93, 157, 0.22) 0,
+    rgba(14, 93, 157, 0.22) 18px,
+    rgba(255, 255, 255, 0.22) 18px,
+    rgba(255, 255, 255, 0.22) 36px
+  );
+  opacity: 0.4;
+  z-index: 2;
+}
+
+.penalty-twelve-pitch {
+  position: absolute;
+  left: 50%;
+  bottom: -42px;
+  width: 122%;
+  height: 78%;
+  transform: translateX(-50%) rotateX(63deg);
+  transform-origin: bottom center;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.045) 0,
+      rgba(255, 255, 255, 0.045) 44px,
+      rgba(0, 0, 0, 0.045) 44px,
+      rgba(0, 0, 0, 0.045) 88px
+    ),
+    linear-gradient(#62cb5d, #128131);
+  clip-path: polygon(13% 0, 87% 0, 100% 100%, 0 100%);
+  border-left: 5px solid rgba(255, 255, 255, 0.52);
+  border-right: 5px solid rgba(255, 255, 255, 0.52);
+  z-index: 3;
+}
+
+.penalty-twelve-center-perspective-line {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  width: 2px;
+  height: 82%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.penalty-twelve-box-line {
+  position: absolute;
+  left: 50%;
+  top: 9%;
+  width: 42%;
+  height: 18%;
+  transform: translateX(-50%);
+  border: 3px solid rgba(255, 255, 255, 0.43);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+}
+
+.penalty-twelve-penalty-mark {
+  position: absolute;
+  left: 50%;
+  bottom: 86px;
+  width: 12px;
+  height: 12px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 4;
+}
+
+.penalty-twelve-goal-wrap {
+  position: absolute;
+  top: 118px;
+  left: 50%;
+  width: 78%;
+  height: 176px;
+  transform: translateX(-50%);
+  z-index: 8;
+  transform-style: preserve-3d;
+}
+
+.penalty-twelve-goal-depth {
+  position: absolute;
+  left: 5%;
+  top: 9%;
+  width: 90%;
+  height: 88%;
+  border-radius: 10px 10px 18px 18px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.28) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.28) 1px, transparent 1px),
+    rgba(205, 244, 255, 0.35);
+  background-size: 22px 22px;
+  transform: translateZ(-20px) scale(0.92);
+  opacity: 0.8;
+}
+
+.penalty-twelve-goal-net {
+  position: absolute;
+  inset: 10px;
+  border-radius: 8px 8px 18px 18px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.42) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.42) 1px, transparent 1px),
+    rgba(220, 249, 255, 0.48);
+  background-size: 24px 24px;
+  box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.12);
+  z-index: 1;
+  transform-origin: center center;
+}
+
+.penalty-twelve-goal-net.net-hit {
+  animation: penaltyTwelveNetHit 0.6s ease-out;
+}
+
+.penalty-twelve-goal-frame {
+  position: absolute;
+  inset: 0;
+  border: 9px solid white;
+  border-bottom-width: 6px;
+  border-radius: 10px 10px 20px 20px;
+  z-index: 3;
+  box-shadow:
+    0 8px 0 rgba(0, 0, 0, 0.18),
+    inset 0 0 0 2px rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+}
+
+.penalty-twelve-goal-frame.frame-shake {
+  animation: penaltyTwelveFrameShake 0.42s ease-in-out;
+}
+
+.penalty-twelve-keeper {
+  position: absolute;
+  left: 50%;
+  top: 164px;
+  width: 88px;
+  height: 124px;
+  transform: translateX(-50%);
+  z-index: 13;
+  filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.28));
+  animation: penaltyTwelveKeeperReady 1.4s infinite alternate ease-in-out;
+  transform-origin: center bottom;
+}
+
+.penalty-twelve-keeper.dive-left {
+  animation: penaltyTwelveDiveLeft 0.72s forwards cubic-bezier(0.18, 0.83, 0.25, 1);
+}
+
+.penalty-twelve-keeper.dive-right {
+  animation: penaltyTwelveDiveRight 0.72s forwards cubic-bezier(0.18, 0.83, 0.25, 1);
+}
+
+.penalty-twelve-keeper.freeze {
+  animation: none;
+}
+
+.penalty-twelve-keeper-head {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #ffd3a3;
+  border: 3px solid #5b3620;
+  z-index: 3;
+}
+
+.penalty-twelve-keeper-hair {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 35px;
+  height: 15px;
+  transform: translateX(-50%);
+  border-radius: 18px 18px 6px 6px;
+  background: #453020;
+}
+
+.penalty-twelve-keeper-face {
+  position: absolute;
+  top: 15px;
+  left: 7px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #1e1e1e;
+  box-shadow: 13px 0 0 #1e1e1e;
+}
+
+.penalty-twelve-keeper-body {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  width: 48px;
+  height: 50px;
+  transform: translateX(-50%);
+  border-radius: 16px 16px 12px 12px;
+  background: linear-gradient(#ffd84d, #ff9828);
+  border: 3px solid #7b3b00;
+  z-index: 2;
+}
+
+.penalty-twelve-keeper-arm {
+  position: absolute;
+  top: 35px;
+  width: 16px;
+  height: 58px;
+  background: #ffd05a;
+  border: 3px solid #7b3b00;
+  border-radius: 999px;
+  transform-origin: top center;
+  z-index: 1;
+}
+
+.penalty-twelve-keeper-arm.left {
+  left: 11px;
+  transform: rotate(32deg);
+}
+
+.penalty-twelve-keeper-arm.right {
+  right: 11px;
+  transform: rotate(-32deg);
+}
+
+.penalty-twelve-keeper-glove {
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  width: 22px;
+  height: 20px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #304259;
+}
+
+.penalty-twelve-keeper-leg {
+  position: absolute;
+  top: 76px;
+  width: 19px;
+  height: 48px;
+  background: #2559b8;
+  border: 3px solid #14356e;
+  border-radius: 999px;
+  transform-origin: top center;
+  z-index: 1;
+}
+
+.penalty-twelve-keeper-leg.left {
+  left: 27px;
+  transform: rotate(8deg);
+}
+
+.penalty-twelve-keeper-leg.right {
+  right: 27px;
+  transform: rotate(-8deg);
+}
+
+.penalty-twelve-ball {
+  position: absolute;
+  left: 50%;
+  bottom: 42px;
+  width: 76px;
+  height: 76px;
+  transform: translateX(-50%) rotate(0deg);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 45%, #111 0 13%, transparent 14%),
+    radial-gradient(circle at 30% 24%, #111 0 8%, transparent 9%),
+    radial-gradient(circle at 72% 25%, #111 0 8%, transparent 9%),
+    radial-gradient(circle at 31% 74%, #111 0 8%, transparent 9%),
+    radial-gradient(circle at 70% 72%, #111 0 8%, transparent 9%),
+    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.95) 0 13%, transparent 14%),
+    #fff;
+  border: 4px solid #111;
+  z-index: 22;
+  box-shadow:
+    0 18px 18px rgba(0, 0, 0, 0.35),
+    inset -8px -10px 12px rgba(0, 0, 0, 0.12);
+  transition:
+    left 0.82s cubic-bezier(0.18, 0.79, 0.19, 1),
+    top 0.82s cubic-bezier(0.18, 0.79, 0.19, 1),
+    bottom 0.82s cubic-bezier(0.18, 0.79, 0.19, 1),
+    width 0.82s cubic-bezier(0.18, 0.79, 0.19, 1),
+    height 0.82s cubic-bezier(0.18, 0.79, 0.19, 1),
+    opacity 0.82s ease,
+    transform 0.82s cubic-bezier(0.18, 0.79, 0.19, 1);
+}
+
+.penalty-twelve-ball.power {
+  animation: penaltyTwelvePowerKick 0.18s ease-in-out;
+}
+
+.penalty-twelve-ball.second-move {
+  transition:
+    left 0.42s cubic-bezier(0.14, 0.75, 0.2, 1),
+    top 0.42s cubic-bezier(0.14, 0.75, 0.2, 1),
+    bottom 0.42s cubic-bezier(0.14, 0.75, 0.2, 1),
+    width 0.42s cubic-bezier(0.14, 0.75, 0.2, 1),
+    height 0.42s cubic-bezier(0.14, 0.75, 0.2, 1),
+    opacity 0.42s ease,
+    transform 0.42s cubic-bezier(0.14, 0.75, 0.2, 1);
+}
+
+.penalty-twelve-ball-shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  width: 92px;
+  height: 20px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.28);
+  z-index: 15;
+  transition:
+    left 0.82s cubic-bezier(0.18, 0.79, 0.19, 1),
+    top 0.82s cubic-bezier(0.18, 0.79, 0.19, 1),
+    bottom 0.82s cubic-bezier(0.18, 0.79, 0.19, 1),
+    width 0.82s cubic-bezier(0.18, 0.79, 0.19, 1),
+    height 0.82s cubic-bezier(0.18, 0.79, 0.19, 1),
+    opacity 0.82s ease;
+}
+
+.penalty-twelve-trail {
+  position: absolute;
+  left: 50%;
+  bottom: 72px;
+  width: 12px;
+  height: 0;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0)
+  );
+  z-index: 18;
+  opacity: 0;
+  filter: blur(1px);
+}
+
+.penalty-twelve-trail.show {
+  animation: penaltyTwelveTrailShow 0.55s ease-out;
+}
+
+.penalty-twelve-impact {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  z-index: 30;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.penalty-twelve-impact.show {
+  animation: penaltyTwelveImpactPop 0.35s ease-out;
+}
+
+.penalty-twelve-message {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 86%;
+  transform: translateX(-50%);
+  padding: 12px;
+  border-radius: 20px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.97);
+  border: 4px solid white;
+  box-shadow:
+    0 8px 0 rgba(0, 0, 0, 0.13),
+    0 14px 28px rgba(0, 0, 0, 0.18);
+  z-index: 40;
+  display: none;
+}
+
+.penalty-twelve-message.show {
+  display: block;
+  animation: penaltyTwelvePop 0.25s ease-out;
+}
+
+.penalty-twelve-result-word {
+  font-size: clamp(1.75rem, 7vw, 2.125rem);
+  font-weight: 1000;
+  margin-bottom: 4px;
+}
+
+.penalty-twelve-result-word.goal-text {
+  color: #12a83b;
+  text-shadow: 2px 2px 0 #bfffc9;
+}
+
+.penalty-twelve-result-word.miss-text {
+  color: #e03d34;
+  text-shadow: 2px 2px 0 #ffd1cc;
+}
+
+.penalty-twelve-answer-text {
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.penalty-twelve-combo-text {
+  margin-top: 4px;
+  font-size: 12pt;
+  color: #ff8a00;
+  font-weight: 1000;
+}
+
+.penalty-twelve-options-panel {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  z-index: 30;
+  flex-shrink: 0;
+}
+
+.penalty-twelve-option {
+  border: 3px solid white;
+  border-radius: 16px;
+  padding: 13px 8px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #16324a;
+  font-size: 1rem;
+  line-height: 1.2;
+  font-weight: 1000;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+}
+
+.penalty-twelve-option:hover {
+  background: #fff4c4;
+}
+
+.penalty-twelve-option:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.14);
+}
+
+.penalty-twelve-option.selected {
+  background: #ffe16d;
+  border-color: #ff9416;
+  transform: scale(1.02);
+}
+
+.penalty-twelve-option.correct {
+  background: #89ef91;
+  border-color: #12a538;
+}
+
+.penalty-twelve-option.wrong {
+  background: #ff9999;
+  border-color: #dd3333;
+}
+
+.penalty-twelve-option.disabled {
+  pointer-events: none;
+}
+
+.penalty-twelve-end-score {
+  font-size: clamp(2.5rem, 10vw, 3.375rem);
+  color: #0f64c4;
+  font-weight: 1000;
+  margin: 12px 0;
+}
+
+.penalty-twelve-rank {
+  font-size: 1.6rem;
+  color: #ff8500;
+  font-weight: 1000;
+  margin: 10px 0 18px;
+}
+
+.penalty-twelve-final-points {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #1d4f6f;
+}
+
+.home-game-penalty {
+  background: linear-gradient(145deg, #14532d 0%, #16a34a 55%, #4ade80 100%);
+  color: #ecfdf5;
+}
+
+.penalty-twelve-app--playing {
+  padding: 6px;
+  border-radius: 1rem;
+}
+
+@keyframes penaltyTwelveIntroBounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes penaltyTwelveKeeperReady {
+  from {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  to {
+    transform: translateX(-50%) translateY(3px) scale(1.015);
+  }
+}
+
+@keyframes penaltyTwelveDiveLeft {
+  0% {
+    left: 50%;
+    transform: translateX(-50%) rotate(0deg) scale(1);
+  }
+  45% {
+    left: 34%;
+    transform: translateX(-50%) translateY(-18px) rotate(-44deg) scale(1.04);
+  }
+  100% {
+    left: 24%;
+    transform: translateX(-50%) translateY(-14px) rotate(-72deg) scale(1.02);
+  }
+}
+
+@keyframes penaltyTwelveDiveRight {
+  0% {
+    left: 50%;
+    transform: translateX(-50%) rotate(0deg) scale(1);
+  }
+  45% {
+    left: 66%;
+    transform: translateX(-50%) translateY(-18px) rotate(44deg) scale(1.04);
+  }
+  100% {
+    left: 76%;
+    transform: translateX(-50%) translateY(-14px) rotate(72deg) scale(1.02);
+  }
+}
+
+@keyframes penaltyTwelvePowerKick {
+  0% {
+    transform: translateX(-50%) scale(1) rotate(0deg);
+  }
+  45% {
+    transform: translateX(-50%) translateY(12px) scale(1.12) rotate(-12deg);
+  }
+  100% {
+    transform: translateX(-50%) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes penaltyTwelveTrailShow {
+  0% {
+    opacity: 0;
+    height: 0;
+  }
+  25% {
+    opacity: 0.9;
+    height: 170px;
+  }
+  100% {
+    opacity: 0;
+    height: 40px;
+  }
+}
+
+@keyframes penaltyTwelveNetHit {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  35% {
+    transform: scaleX(1.04) scaleY(1.08) translateY(5px);
+    filter: brightness(1.15);
+  }
+  70% {
+    transform: scaleX(0.98) scaleY(0.96) translateY(-2px);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes penaltyTwelveFrameShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  18% {
+    transform: translateX(-7px);
+  }
+  36% {
+    transform: translateX(6px);
+  }
+  54% {
+    transform: translateX(-4px);
+  }
+  72% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes penaltyTwelveImpactPop {
+  0% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(3.2);
+  }
+}
+
+@keyframes penaltyTwelvePop {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.75);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+@media (max-width: 640px) {
+  .penalty-twelve-layout--playing {
+    gap: 4px;
+  }
+
+  .penalty-twelve-top-bar {
+    padding: 6px 8px;
+    font-size: 12pt;
+    gap: 4px;
+    border-radius: 14px;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  .penalty-twelve-sound-toggle {
+    padding: 4px 8px;
+    font-size: 12pt;
+  }
+
+  .penalty-twelve-word-panel {
+    padding: 6px 10px;
+    border-radius: 16px;
+    border-width: 2px;
+  }
+
+  .penalty-twelve-word-label {
+    font-size: 12pt;
+  }
+
+  .penalty-twelve-english-word {
+    font-size: 1.45rem;
+  }
+
+  .penalty-twelve-stadium {
+    border-radius: 18px;
+  }
+
+  .penalty-twelve-goal-wrap {
+    top: 96px;
+    width: 82%;
+    height: 140px;
+  }
+
+  .penalty-twelve-keeper {
+    top: 128px;
+    width: 72px;
+    height: 100px;
+  }
+
+  .penalty-twelve-ball {
+    width: 58px;
+    height: 58px;
+    bottom: 34px;
+  }
+
+  .penalty-twelve-ball-shadow {
+    width: 70px;
+    bottom: 22px;
+  }
+
+  .penalty-twelve-penalty-mark {
+    bottom: 64px;
+  }
+
+  .penalty-twelve-options-panel {
+    gap: 6px;
+  }
+
+  .penalty-twelve-option {
+    font-size: 12pt;
+    padding: 9px 5px;
+    border-radius: 12px;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.14);
+  }
+
+  .penalty-twelve-result-word {
+    font-size: 1.35rem;
+  }
+
+  .penalty-twelve-answer-text {
+    font-size: 12pt;
+  }
+}

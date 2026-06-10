@@ -1,5 +1,6 @@
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import GameHomeButton from "../components/GameHomeButton.jsx";
 import LanguageToggle from "../components/LanguageToggle.jsx";
 import { useLocale } from "../features/locale/LocaleContext.jsx";
 import { useWordsContext } from "../features/words/WordsContext.jsx";
@@ -369,7 +370,7 @@ function FishingBlastPage() {
   return (
     <section className="fishing-blast-app flex h-[calc(100svh-1rem)] max-h-[calc(100svh-1rem)] w-full max-w-5xl flex-col overflow-hidden rounded-[1.5rem] p-2 sm:p-4">
       <header className="relative z-50 mb-2 flex shrink-0 items-center justify-between gap-2">
-        <div className="min-w-[4.5rem]" />
+        <GameHomeButton />
         <div className="pointer-events-none flex-1 text-center">
           <h1 className="text-3xl font-black text-sky-100 drop-shadow sm:text-5xl">
             {t("games.fishingBlast.title")}
@@ -394,7 +395,7 @@ function FishingBlastPage() {
               [t("games.streak"), streak, "text-sky-200"],
             ].map(([label, value, color]) => (
               <div className="fishing-blast-stat" key={label}>
-                <p className="text-[0.48rem] font-bold uppercase text-sky-200 sm:text-xs">
+                <p className="text-xs font-bold uppercase text-sky-200 sm:text-xs">
                   {label}
                 </p>
                 <p className={`text-sm font-black sm:text-xl ${color}`}>{value}</p>
@@ -560,7 +561,7 @@ function FishingBlastPage() {
                 [t("games.accuracy"), `${accuracy}%`],
               ].map(([label, value]) => (
                 <div className="fishing-blast-summary-card" key={label}>
-                  <p className="text-[0.65rem] font-bold uppercase text-sky-200">
+                  <p className="text-xs font-bold uppercase text-sky-200">
                     {label}
                   </p>
                   <p className="text-2xl font-black text-yellow-300">{value}</p>

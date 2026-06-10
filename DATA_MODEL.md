@@ -1,4 +1,4 @@
-# LexiLoop Data Model
+# LexiLand Data Model
 
 This document describes the data model for the first localStorage version and the future Supabase version.
 
@@ -115,7 +115,7 @@ Recommended beginner rule: if forgotten, reset `level` to `0` and review again t
 Use one storage key for the MVP:
 
 ```text
-lexiloop.words.v1
+lexiland.words.v1
 ```
 
 The value should be a JSON string containing an array of `Word` objects.

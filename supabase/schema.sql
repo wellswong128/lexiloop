@@ -1,4 +1,4 @@
--- LexiLoop Supabase schema
+-- LexiLand Supabase schema
 -- Run this in the Supabase SQL editor after creating a Supabase project.
 
 create extension if not exists "pgcrypto";

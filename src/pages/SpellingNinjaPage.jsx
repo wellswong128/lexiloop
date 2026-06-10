@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import GameHomeButton from "../components/GameHomeButton.jsx";
 import LanguageToggle from "../components/LanguageToggle.jsx";
 import { useLocale } from "../features/locale/LocaleContext.jsx";
 import { useWordsContext } from "../features/words/WordsContext.jsx";
@@ -402,17 +403,20 @@ function SpellingNinjaPage() {
   return (
     <section className="flex h-[calc(100svh-1rem)] max-h-[calc(100svh-1rem)] w-full max-w-5xl flex-col overflow-hidden rounded-[1.5rem] bg-slate-950 p-2 text-slate-50 shadow-2xl shadow-slate-950/30 sm:p-4">
       <div className="relative mb-2">
+        <div className="absolute left-0 top-0">
+          <GameHomeButton />
+        </div>
         <div className="absolute right-0 top-0">
           <LanguageToggle />
         </div>
         <div className="text-center">
-          <p className="text-[0.6rem] font-black uppercase tracking-[0.32em] text-cyan-300 sm:text-xs">
+          <p className="text-xs font-black uppercase tracking-[0.32em] text-cyan-300 sm:text-xs">
             {t("games.ninja.title")}
           </p>
           <h1 className="text-3xl font-black tracking-tight text-cyan-300 drop-shadow-[0_0_18px_rgba(34,211,238,0.5)] sm:text-5xl">
             {t("games.ninja.title")}
           </h1>
-          <p className="text-[0.7rem] text-slate-400 sm:text-sm">
+          <p className="text-xs text-slate-400 sm:text-sm">
             {t("games.ninja.subtitle")}
           </p>
         </div>
@@ -433,7 +437,7 @@ function SpellingNinjaPage() {
                 className="rounded-lg border border-slate-700/70 bg-slate-900/90 px-1 py-1 text-center sm:rounded-2xl sm:px-2 sm:py-2"
                 key={label}
               >
-                <p className="text-[0.48rem] font-bold uppercase text-slate-400 sm:text-xs">
+                <p className="text-xs font-bold uppercase text-slate-400 sm:text-xs">
                   {label}
                 </p>
                 <p className={`text-sm font-black sm:text-2xl ${color}`}>
@@ -462,7 +466,7 @@ function SpellingNinjaPage() {
         {gameState === "start" ? (
           <div className="text-center">
             <div className="spelling-ninja-dojo mb-4 rounded-3xl border border-slate-700/70 p-4">
-              <p className="text-[0.65rem] font-black uppercase tracking-[0.25em] text-slate-400">
+              <p className="text-xs font-black uppercase tracking-[0.25em] text-slate-400">
                 {t("games.demoMode")}
               </p>
               <div className="spelling-ninja-enemy spelling-ninja-enemy-compact mx-auto mt-5">
@@ -496,7 +500,7 @@ function SpellingNinjaPage() {
         {gameState === "playing" && round ? (
           <div>
             <div className="spelling-ninja-dojo relative mb-1.5 overflow-hidden rounded-2xl border border-slate-700/70 p-2 text-center sm:rounded-3xl sm:p-4">
-              <p className="text-[0.55rem] font-black uppercase tracking-[0.22em] text-slate-400 sm:text-[0.65rem]">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-slate-400 sm:text-xs">
                 {isBoss ? "Boss Word" : "Ninja Dojo"} | {t("games.level")} {level}
               </p>
 
@@ -521,7 +525,7 @@ function SpellingNinjaPage() {
                 <div className="text-xl font-black leading-tight text-yellow-300 sm:text-4xl">
                   {round.word.meaning}
                 </div>
-                <p className="mt-1.5 text-[0.65rem] leading-relaxed text-slate-300 sm:text-xs">
+                <p className="mt-1.5 text-xs leading-relaxed text-slate-300 sm:text-xs">
                   {t("games.partOfSpeech", { type: round.word.type })} | {round.word.word.length} | {Math.min(round.targetIndex + 1, round.word.word.length)}/{round.word.word.length}
                 </p>
               </div>
@@ -584,7 +588,7 @@ function SpellingNinjaPage() {
         {gameState === "over" ? (
           <div className="text-center">
             <div className="spelling-ninja-dojo mb-3 rounded-3xl border border-slate-700/70 p-4">
-              <p className="text-[0.65rem] font-black uppercase tracking-[0.25em] text-slate-400">
+              <p className="text-xs font-black uppercase tracking-[0.25em] text-slate-400">
                 {t("games.result")}
               </p>
               <div className="spelling-ninja-stage mx-auto mt-3">
@@ -605,7 +609,7 @@ function SpellingNinjaPage() {
                 [t("games.accuracy"), `${accuracy}%`],
               ].map(([label, value]) => (
                 <div className="rounded-2xl bg-slate-800 p-3" key={label}>
-                  <p className="text-[0.65rem] font-bold uppercase text-slate-400">
+                  <p className="text-xs font-bold uppercase text-slate-400">
                     {label}
                   </p>
                   <p className="mt-0.5 text-2xl font-black text-cyan-300">

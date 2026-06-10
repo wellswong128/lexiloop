@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import GameHomeButton from "../components/GameHomeButton.jsx";
 import LanguageToggle from "../components/LanguageToggle.jsx";
 import { useLocale } from "../features/locale/LocaleContext.jsx";
 import { useWordsContext } from "../features/words/WordsContext.jsx";
@@ -321,7 +322,7 @@ function WordKartPage() {
   return (
     <section className="word-kart-app flex h-[calc(100svh-1rem)] max-h-[calc(100svh-1rem)] w-full max-w-5xl flex-col overflow-hidden rounded-[1.5rem] p-2 sm:p-4">
       <header className="relative z-50 mb-2 flex shrink-0 items-center justify-between gap-2">
-        <div className="min-w-[4.5rem]" />
+        <GameHomeButton />
         <div className="pointer-events-none flex-1 text-center">
           <h1 className="text-3xl font-black text-orange-50 drop-shadow sm:text-5xl">
             {t("games.wordKart.title")}
@@ -346,7 +347,7 @@ function WordKartPage() {
               [t("games.round"), round, "text-purple-200"],
             ].map(([label, value, color]) => (
               <div className="word-kart-stat" key={label}>
-                <p className="text-[0.48rem] font-bold uppercase text-sky-200 sm:text-xs">
+                <p className="text-xs font-bold uppercase text-sky-200 sm:text-xs">
                   {label}
                 </p>
                 <p className={`text-sm font-black sm:text-xl ${color}`}>{value}</p>
@@ -491,7 +492,7 @@ function WordKartPage() {
                 [t("games.accuracy"), `${accuracy}%`],
               ].map(([label, value]) => (
                 <div className="word-kart-summary-card" key={label}>
-                  <p className="text-[0.65rem] font-bold uppercase text-sky-200">
+                  <p className="text-xs font-bold uppercase text-sky-200">
                     {label}
                   </p>
                   <p className="text-2xl font-black text-yellow-300">{value}</p>

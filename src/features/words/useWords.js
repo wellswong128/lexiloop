@@ -197,7 +197,8 @@ export function useWords({ isAuthLoading = false, user = null } = {}, storage) {
   );
 
   const importWords = useCallback(
-    async (wordInputs) => {
+    async (wordInputs, options = {}) => {
+      const source = options.source ?? WORD_SOURCES.IMPORT;
       const existingTerms = new Set(words.map((word) => normalizeTerm(word.term)));
       const importedWords = [];
       const skippedWords = [];
@@ -210,7 +211,7 @@ export function useWords({ isAuthLoading = false, user = null } = {}, storage) {
           return;
         }
 
-        const importedWord = createWord(wordInput, { source: WORD_SOURCES.IMPORT });
+        const importedWord = createWord(wordInput, { source });
 
         importedWords.push(importedWord);
         existingTerms.add(normalizedTerm);

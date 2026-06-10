@@ -1,4 +1,4 @@
-# LexiLoop Tasks
+# LexiLand Tasks
 
 This task list is designed for beginner-friendly development. Finish one small task, run the app, test it manually, then move to the next task.
 
@@ -25,7 +25,7 @@ This task list is designed for beginner-friendly development. Finish one small t
 - [x] Start the development server.
 - [x] Confirm the default Vite page works in the browser.
 - [x] Remove unused starter UI.
-- [x] Create a simple `App` component with the text `LexiLoop`.
+- [x] Create a simple `App` component with the text `LexiLand`.
 - [x] Make sure the page still works after refresh.
 
 Suggested commands:
@@ -94,7 +94,7 @@ src/
 ## Phase 6: Build localStorage Helpers
 
 - [x] Create `src/lib/storage.js`.
-- [x] Add a storage key like `lexiloop.words.v1`.
+- [x] Add a storage key like `lexiland.words.v1`.
 - [x] Create `loadWords`.
 - [x] Create `saveWords`.
 - [x] Create `resetWords`.

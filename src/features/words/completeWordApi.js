@@ -1,0 +1,110 @@
+export function createDemoSuggestion(term) {
+  const normalizedTerm = term.trim();
+
+  return {
+    term: normalizedTerm,
+    definition: `A demo vocabulary card for "${normalizedTerm}". Replace this with the real definition before saving.`,
+    translation: "示範翻譯",
+    pronunciation: "",
+    partOfSpeech: "word",
+    example: `I am learning how to use "${normalizedTerm}" in a sentence.`,
+    tags: ["demo", "ai-fallback"],
+  };
+}
+
+export async function readJsonResponse(response) {
+  const text = await response.text();
+
+  if (!text) {
+    throw new Error(
+      "AI service returned an empty response. Check the Vercel function logs and AGNES_API_KEY.",
+    );
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error(
+      "AI service did not return JSON. If you are testing locally, run through Vercel or deploy the latest version.",
+    );
+  }
+}
+
+export function suggestionToFormValues(suggestion) {
+  return {
+    term: suggestion.term ?? "",
+    definition: suggestion.definition ?? "",
+    translation: suggestion.translation ?? "",
+    pronunciation: suggestion.pronunciation ?? "",
+    partOfSpeech: suggestion.partOfSpeech ?? "",
+    example: suggestion.example ?? "",
+    tags: Array.isArray(suggestion.tags) ? suggestion.tags.join(", ") : "",
+  };
+}
+
+export async function fetchCompleteWord(term) {
+  const response = await fetch("/api/complete-word", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ term }),
+  });
+  const data = await readJsonResponse(response);
+
+  if (!response.ok) {
+    throw new Error(data.error || "AI Fill failed.");
+  }
+
+  return {
+    suggestion: data.suggestion,
+    usedFallback: false,
+  };
+}
+
+export async function fetchCompleteWordWithFallback(term) {
+  try {
+    return await fetchCompleteWord(term);
+  } catch (error) {
+    return {
+      suggestion: createDemoSuggestion(term),
+      usedFallback: true,
+      fallbackReason: error.message,
+    };
+  }
+}
+
+export async function fetchExtractedWords(imageDataUrl) {
+  const response = await fetch("/api/extract-words-from-image", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ imageDataUrl }),
+  });
+  const data = await readJsonResponse(response);
+
+  if (!response.ok) {
+    throw new Error(data.error || "Could not extract words from the image.");
+  }
+
+  return data.words ?? [];
+}
+
+export async function completeWordsInBatch(terms, { onProgress } = {}) {
+  const results = [];
+
+  for (let index = 0; index < terms.length; index += 1) {
+    const term = terms[index];
+    const result = await fetchCompleteWordWithFallback(term);
+
+    results.push({
+      ...suggestionToFormValues(result.suggestion),
+      usedFallback: result.usedFallback,
+    });
+
+    onProgress?.(index + 1, terms.length);
+  }
+
+  return results;
+}

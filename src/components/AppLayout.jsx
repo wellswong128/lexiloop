@@ -13,6 +13,8 @@ const navItems = [
   { to: "/games/fishing-blast", labelKey: "nav.fishBlast" },
   { to: "/games/word-kart", labelKey: "nav.wordKart" },
   { to: "/games/grammar-arena", labelKey: "nav.grammarArena" },
+  { to: "/games/battle-jet", labelKey: "nav.battleJet" },
+  { to: "/games/penalty-twelve", labelKey: "nav.penaltyTwelve" },
   { to: "/mistakes", labelKey: "nav.mistakes" },
   { to: "/import", labelKey: "nav.import" },
   { to: "/settings", labelKey: "nav.settings" },
@@ -78,7 +80,7 @@ function AppLayout({ children }) {
               to="/"
               className="min-w-0 flex-1 truncate rounded-lg text-2xl font-bold tracking-tight text-blue-950"
             >
-              LexiLoop
+              {t("brand.name")}
             </NavLink>
             <div className="relative z-50 ml-auto shrink-0">
               <LanguageToggle />

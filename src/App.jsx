@@ -13,6 +13,8 @@ import SettingsPage from "./pages/SettingsPage.jsx";
 import FishingBlastPage from "./pages/FishingBlastPage.jsx";
 import SpellingNinjaPage from "./pages/SpellingNinjaPage.jsx";
 import GrammarArenaPage from "./pages/GrammarArenaPage.jsx";
+import BattleJetQuizPage from "./pages/BattleJetQuizPage.jsx";
+import PenaltyTwelvePage from "./pages/PenaltyTwelvePage.jsx";
 import WordKartPage from "./pages/WordKartPage.jsx";
 import WordDetailPage from "./pages/WordDetailPage.jsx";
 import WordListPage from "./pages/WordListPage.jsx";
@@ -33,6 +35,8 @@ function App() {
           <Route path="/games/fishing-blast" element={<FishingBlastPage />} />
           <Route path="/games/word-kart" element={<WordKartPage />} />
           <Route path="/games/grammar-arena" element={<GrammarArenaPage />} />
+          <Route path="/games/battle-jet" element={<BattleJetQuizPage />} />
+          <Route path="/games/penalty-twelve" element={<PenaltyTwelvePage />} />
           <Route path="/mistakes" element={<MistakesPage />} />
           <Route path="/import" element={<ImportPage />} />
           <Route path="/settings" element={<SettingsPage />} />

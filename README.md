@@ -1,6 +1,6 @@
-# LexiLoop
+# 力思樂園 LexiLand
 
-LexiLoop is an English vocabulary memory app built with React. It helps users save English words, review them with flashcards, test themselves with quizzes, collect mistakes, and remember words through simple spaced repetition.
+力思樂園 LexiLand is an English vocabulary learning app built with React. Play for vocabulary power. Learn for English power. It helps users save English words, review them with flashcards, test themselves with quizzes, collect mistakes, and remember words through simple spaced repetition.
 
 The first version uses `localStorage` so the app can be built quickly without a backend. A future version will use Supabase for accounts, cloud sync, and multi-device access.
 
@@ -78,7 +78,7 @@ Then open the local Vite URL shown in the terminal.
 The MVP stores all words in the browser with this key:
 
 ```text
-lexiloop.words.v1
+lexiland.words.v1
 ```
 
 This makes the first version simple and fast to build. The tradeoff is that data stays in the same browser and can be lost if the user clears browser storage.
