@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import SpeakButton from "../components/SpeakButton.jsx";
 import { useLocale } from "../features/locale/LocaleContext.jsx";
+import {
+  createDemoSuggestion,
+  fetchCompleteWord,
+  suggestionToFormValues,
+} from "../features/words/completeWordApi.js";
 import { useWordsContext } from "../features/words/WordsContext.jsx";
 
 function getFormValues(word) {
@@ -25,6 +30,8 @@ function WordDetailPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [formValues, setFormValues] = useState(null);
   const [error, setError] = useState("");
+  const [aiMessage, setAiMessage] = useState("");
+  const [isAiLoading, setIsAiLoading] = useState(false);
 
   function formatDate(value) {
     if (!value) {
@@ -43,6 +50,7 @@ function WordDetailPage() {
       setFormValues(getFormValues(word));
       setIsEditing(false);
       setError("");
+      setAiMessage("");
     }
   }, [word]);
 
@@ -59,6 +67,39 @@ function WordDetailPage() {
     setFormValues(getFormValues(word));
     setIsEditing(false);
     setError("");
+    setAiMessage("");
+  }
+
+  async function handleAiFill() {
+    const term = formValues.term.trim();
+
+    if (!term) {
+      setError(t("addWord.enterWordFirst"));
+      return;
+    }
+
+    try {
+      setError("");
+      setAiMessage("");
+      setIsAiLoading(true);
+
+      const { suggestion } = await fetchCompleteWord(term);
+
+      setFormValues((currentValues) => ({
+        ...currentValues,
+        ...suggestionToFormValues(suggestion),
+      }));
+      setAiMessage(t("addWord.aiSuccess"));
+    } catch (aiError) {
+      setFormValues((currentValues) => ({
+        ...currentValues,
+        ...suggestionToFormValues(createDemoSuggestion(term)),
+      }));
+      setError("");
+      setAiMessage(t("addWord.aiFallback", { reason: aiError.message }));
+    } finally {
+      setIsAiLoading(false);
+    }
   }
 
   function handleSubmit(event) {
@@ -129,6 +170,28 @@ function WordDetailPage() {
 
       {isEditing ? (
         <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="font-bold text-blue-950">{t("addWord.aiTitle")}</h2>
+                <p className="mt-1 text-sm text-slate-600">{t("addWord.aiDescription")}</p>
+              </div>
+              <button
+                className="rounded-full bg-blue-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-800 disabled:bg-slate-300"
+                disabled={isAiLoading}
+                onClick={handleAiFill}
+                type="button"
+              >
+                {isAiLoading ? t("addWord.aiFilling") : t("addWord.aiFill")}
+              </button>
+            </div>
+            {aiMessage ? (
+              <p className="mt-3 rounded-xl border border-green-200 bg-green-50 px-3 py-2 text-sm font-medium text-green-700">
+                {aiMessage}
+              </p>
+            ) : null}
+          </div>
+
           {error ? (
             <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
               {error}
