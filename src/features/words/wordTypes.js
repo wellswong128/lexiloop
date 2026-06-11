@@ -5,6 +5,24 @@ export const WORD_SOURCES = {
   PHOTO: "photo",
 };
 
+const SUPABASE_WORD_SOURCES = new Set([
+  WORD_SOURCES.MANUAL,
+  WORD_SOURCES.IMPORT,
+  WORD_SOURCES.AI,
+]);
+
+export function toSupabaseSource(source) {
+  if (source === WORD_SOURCES.PHOTO) {
+    return WORD_SOURCES.AI;
+  }
+
+  if (SUPABASE_WORD_SOURCES.has(source)) {
+    return source;
+  }
+
+  return WORD_SOURCES.MANUAL;
+}
+
 export const REVIEW_RESULTS = {
   CORRECT: "correct",
   INCORRECT: "incorrect",

@@ -10,6 +10,7 @@ import {
   normalizeTerm,
   normalizeText,
   WORD_SOURCES,
+  toSupabaseSource,
 } from "./wordTypes.js";
 import {
   deleteAllWordsFromSupabase,
@@ -220,9 +221,9 @@ export function useWords({ isAuthLoading = false, user = null } = {}, storage) {
       });
 
       if (isUsingSupabase) {
-        try {
-          const savedWords = [];
+        const savedWords = [];
 
+        try {
           for (const importedWord of importedWords) {
             const savedWord = await insertWordInSupabase(importedWord, user.id);
             savedWords.push(savedWord);
@@ -235,8 +236,16 @@ export function useWords({ isAuthLoading = false, user = null } = {}, storage) {
             skippedWords,
           };
         } catch (error) {
+          if (savedWords.length > 0) {
+            setWords((currentWords) => [...savedWords, ...currentWords]);
+          }
+
           setWordsError(error.message);
-          throw error;
+
+          const partialError = new Error(error.message);
+          partialError.savedWords = savedWords;
+          partialError.skippedWords = skippedWords;
+          throw partialError;
         }
       }
 
@@ -284,10 +293,7 @@ export function useWords({ isAuthLoading = false, user = null } = {}, storage) {
       }
 
       try {
-        const source = Object.values(WORD_SOURCES).includes(localWord.source)
-          && localWord.source !== WORD_SOURCES.PHOTO
-          ? localWord.source
-          : WORD_SOURCES.IMPORT;
+        const source = toSupabaseSource(localWord.source);
 
         const savedWord = await insertWordInSupabase(
           {

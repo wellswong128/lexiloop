@@ -1,4 +1,5 @@
 import { supabase } from "../../lib/supabaseClient.js";
+import { toSupabaseSource } from "./wordTypes.js";
 
 const WORD_COLUMNS = `
   id,
@@ -66,7 +67,7 @@ function mapWordToInsert(word, userId) {
     example: word.example,
     notes: word.notes,
     tags: word.tags,
-    source: word.source,
+    source: toSupabaseSource(word.source),
     review_level: word.review.level,
     next_review_at: word.review.nextReviewAt,
     last_reviewed_at: word.review.lastReviewedAt,
@@ -90,7 +91,7 @@ function mapWordChangesToUpdate(changes) {
   if (Object.hasOwn(changes, "example")) update.example = changes.example;
   if (Object.hasOwn(changes, "notes")) update.notes = changes.notes;
   if (Object.hasOwn(changes, "tags")) update.tags = changes.tags;
-  if (Object.hasOwn(changes, "source")) update.source = changes.source;
+  if (Object.hasOwn(changes, "source")) update.source = toSupabaseSource(changes.source);
 
   if (changes.review) {
     update.review_level = changes.review.level;

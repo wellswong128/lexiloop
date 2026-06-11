@@ -136,6 +136,11 @@ const zhHant = {
         noValidWords: "沒有可儲存的有效單字。",
         allSkipped: "這些單字都已存在於你的單字庫。",
         saveSuccess: "已儲存 {{imported}} 個單字，略過 {{skipped}} 個重複項目。",
+        draftRestored: "已還原未儲存的單字，你可以再次嘗試儲存。",
+        partialSaveSuccess:
+          "已儲存 {{imported}} 個單字，尚有 {{remaining}} 個待儲存，略過 {{skipped}} 個重複項目。",
+        partialSaveRetry:
+          "已儲存 {{imported}} 個單字，尚有 {{remaining}} 個未儲存，請修正後再試。",
       },
     },
     wordDetail: {
@@ -575,6 +580,11 @@ export const translations = {
         noValidWords: "No valid words to save.",
         allSkipped: "All selected words already exist in your library.",
         saveSuccess: "Saved {{imported}} words. Skipped {{skipped}} duplicates.",
+        draftRestored: "Unsaved words were restored. You can try saving again.",
+        partialSaveSuccess:
+          "Saved {{imported}} words. {{remaining}} still need saving. Skipped {{skipped}} duplicates.",
+        partialSaveRetry:
+          "Saved {{imported}} words. {{remaining}} could not be saved yet. Fix the issue and try again.",
       },
     },
     wordDetail: {

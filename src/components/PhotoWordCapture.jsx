@@ -1,29 +1,70 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../features/locale/LocaleContext.jsx";
 import {
   completeWordsInBatch,
   fetchExtractedWords,
 } from "../features/words/completeWordApi.js";
-import { WORD_SOURCES } from "../features/words/wordTypes.js";
+import { WORD_SOURCES, normalizeTerm } from "../features/words/wordTypes.js";
 import { useWordsContext } from "../features/words/WordsContext.jsx";
 import { compressImageFile } from "../lib/compressImage.js";
+import {
+  clearPhotoCaptureDraft,
+  loadPhotoCaptureDraft,
+  savePhotoCaptureDraft,
+} from "../lib/storage.js";
 import { splitIntoSingleWordTerms } from "../../lib/normalizeWordTerms.js";
 
+function getInitialPhotoCaptureState() {
+  const draft = loadPhotoCaptureDraft();
+
+  if (!draft) {
+    return {
+      detectedWords: [],
+      hasRestoredDraft: false,
+      imageDataUrl: "",
+      previewUrl: "",
+      previewWords: [],
+      selectedTerms: [],
+      step: "upload",
+    };
+  }
+
+  const step = draft.step === "select" || draft.step === "preview" ? draft.step : "upload";
+
+  return {
+    detectedWords: Array.isArray(draft.detectedWords) ? draft.detectedWords : [],
+    hasRestoredDraft: step === "preview" && Array.isArray(draft.previewWords) && draft.previewWords.length > 0,
+    imageDataUrl: draft.imageDataUrl ?? draft.previewUrl ?? "",
+    previewUrl: draft.previewUrl ?? draft.imageDataUrl ?? "",
+    previewWords: Array.isArray(draft.previewWords) ? draft.previewWords : [],
+    selectedTerms: Array.isArray(draft.selectedTerms) ? draft.selectedTerms : [],
+    step,
+  };
+}
+
+function removeSavedTermsFromPreview(previewWords, savedWords) {
+  const savedTerms = new Set(savedWords.map((word) => normalizeTerm(word.term)));
+
+  return previewWords.filter((word) => !savedTerms.has(normalizeTerm(word.term)));
+}
+
 function PhotoWordCapture() {
+  const initialState = useMemo(() => getInitialPhotoCaptureState(), []);
   const { t } = useLocale();
   const navigate = useNavigate();
   const { importWords, words } = useWordsContext();
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
+  const hasShownRestoreMessageRef = useRef(false);
 
-  const [step, setStep] = useState("upload");
-  const [previewUrl, setPreviewUrl] = useState("");
-  const [imageDataUrl, setImageDataUrl] = useState("");
-  const [detectedWords, setDetectedWords] = useState([]);
-  const [selectedTerms, setSelectedTerms] = useState([]);
+  const [step, setStep] = useState(initialState.step);
+  const [previewUrl, setPreviewUrl] = useState(initialState.previewUrl);
+  const [imageDataUrl, setImageDataUrl] = useState(initialState.imageDataUrl);
+  const [detectedWords, setDetectedWords] = useState(initialState.detectedWords);
+  const [selectedTerms, setSelectedTerms] = useState(initialState.selectedTerms);
   const [manualTerm, setManualTerm] = useState("");
-  const [previewWords, setPreviewWords] = useState([]);
+  const [previewWords, setPreviewWords] = useState(initialState.previewWords);
   const [error, setError] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
   const [isExtracting, setIsExtracting] = useState(false);
@@ -44,6 +85,41 @@ function PhotoWordCapture() {
   const allSelectableSelected =
     selectableTerms.length > 0 &&
     selectableTerms.every((term) => selectedTerms.includes(term));
+
+  useEffect(() => {
+    if (!initialState.hasRestoredDraft || hasShownRestoreMessageRef.current) {
+      return;
+    }
+
+    hasShownRestoreMessageRef.current = true;
+    setStatusMessage(t("addWord.photo.draftRestored"));
+  }, [initialState.hasRestoredDraft, t]);
+
+  useEffect(() => {
+    if (step === "upload") {
+      clearPhotoCaptureDraft();
+      return;
+    }
+
+    const hasDraft =
+      (step === "select" && detectedWords.length > 0) ||
+      (step === "preview" && previewWords.length > 0);
+
+    if (!hasDraft) {
+      clearPhotoCaptureDraft();
+      return;
+    }
+
+    savePhotoCaptureDraft({
+      detectedWords,
+      imageDataUrl,
+      previewUrl: imageDataUrl || previewUrl,
+      previewWords,
+      selectedTerms,
+      step,
+      updatedAt: new Date().toISOString(),
+    });
+  }, [step, previewUrl, imageDataUrl, detectedWords, selectedTerms, previewWords]);
 
   async function handleImageFile(file) {
     try {
@@ -206,17 +282,38 @@ function PhotoWordCapture() {
     try {
       setIsSaving(true);
       setError("");
+      setStatusMessage("");
 
       const result = await importWords(wordsToSave, { source: WORD_SOURCES.PHOTO });
 
       const importedCount = result.importedWords.length;
       const skippedCount = result.skippedWords.length;
+      const remainingPreviewWords = removeSavedTermsFromPreview(
+        previewWords,
+        result.importedWords,
+      );
 
       if (importedCount === 0) {
+        if (remainingPreviewWords.length !== previewWords.length) {
+          setPreviewWords(remainingPreviewWords);
+        }
         setError(t("addWord.photo.allSkipped"));
         return;
       }
 
+      if (remainingPreviewWords.length > 0) {
+        setPreviewWords(remainingPreviewWords);
+        setStatusMessage(
+          t("addWord.photo.partialSaveSuccess", {
+            imported: importedCount,
+            remaining: remainingPreviewWords.length,
+            skipped: skippedCount,
+          }),
+        );
+        return;
+      }
+
+      clearPhotoCaptureDraft();
       setStatusMessage(
         t("addWord.photo.saveSuccess", {
           imported: importedCount,
@@ -225,6 +322,22 @@ function PhotoWordCapture() {
       );
       navigate("/words");
     } catch (saveError) {
+      const savedWords = saveError.savedWords ?? [];
+      const remainingPreviewWords =
+        savedWords.length > 0
+          ? removeSavedTermsFromPreview(previewWords, savedWords)
+          : previewWords;
+
+      if (savedWords.length > 0) {
+        setPreviewWords(remainingPreviewWords);
+        setStatusMessage(
+          t("addWord.photo.partialSaveRetry", {
+            imported: savedWords.length,
+            remaining: remainingPreviewWords.length,
+          }),
+        );
+      }
+
       setError(saveError.message);
     } finally {
       setIsSaving(false);
@@ -232,6 +345,7 @@ function PhotoWordCapture() {
   }
 
   function resetFlow() {
+    clearPhotoCaptureDraft();
     setStep("upload");
     setPreviewUrl("");
     setImageDataUrl("");

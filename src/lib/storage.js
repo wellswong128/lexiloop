@@ -1,4 +1,5 @@
 export const WORDS_STORAGE_KEY = "lexiland.words.v1";
+export const PHOTO_CAPTURE_DRAFT_KEY = "lexiland.photoCaptureDraft.v1";
 const LEGACY_WORDS_STORAGE_KEY = "lexiloop.words.v1";
 
 function getDefaultStorage() {
@@ -67,4 +68,45 @@ export function resetWords(storage = getDefaultStorage()) {
 
   storage.removeItem(WORDS_STORAGE_KEY);
   storage.removeItem(LEGACY_WORDS_STORAGE_KEY);
+}
+
+export function loadPhotoCaptureDraft(storage = getDefaultStorage()) {
+  if (!storage) {
+    return null;
+  }
+
+  const rawValue = storage.getItem(PHOTO_CAPTURE_DRAFT_KEY);
+
+  if (!rawValue) {
+    return null;
+  }
+
+  try {
+    const parsedValue = JSON.parse(rawValue);
+
+    if (!parsedValue || typeof parsedValue !== "object") {
+      return null;
+    }
+
+    return parsedValue;
+  } catch (error) {
+    console.warn("Could not parse stored photo capture draft.", error);
+    return null;
+  }
+}
+
+export function savePhotoCaptureDraft(draft, storage = getDefaultStorage()) {
+  if (!storage) {
+    return;
+  }
+
+  storage.setItem(PHOTO_CAPTURE_DRAFT_KEY, JSON.stringify(draft));
+}
+
+export function clearPhotoCaptureDraft(storage = getDefaultStorage()) {
+  if (!storage) {
+    return;
+  }
+
+  storage.removeItem(PHOTO_CAPTURE_DRAFT_KEY);
 }
