@@ -418,6 +418,7 @@ function PenaltyTwelvePage() {
     toggleSound,
   } = usePenaltyTwelveAudio();
   const timeoutIdsRef = useRef([]);
+  const advanceAfterMessageRef = useRef(null);
 
   const wordBank = useMemo(() => {
     const savedWords = words
@@ -503,6 +504,7 @@ function PenaltyTwelvePage() {
   }, []);
 
   const resetAnimation = useCallback(() => {
+    advanceAfterMessageRef.current = null;
     setMessage(null);
     setBallPower(false);
     setBallSecondMove(false);
@@ -568,6 +570,17 @@ function PenaltyTwelvePage() {
     },
     [getRank],
   );
+
+  const dismissMessage = useCallback(() => {
+    const advance = advanceAfterMessageRef.current;
+    if (!advance) {
+      return;
+    }
+
+    advanceAfterMessageRef.current = null;
+    setMessage(null);
+    advance();
+  }, []);
 
   const startGame = useCallback(() => {
     clearScheduled();
@@ -817,14 +830,14 @@ function PenaltyTwelvePage() {
         type: "goal",
       });
 
-      schedule(() => {
+      advanceAfterMessageRef.current = () => {
         const nextIndex = currentIndex + 1;
         if (nextIndex >= TOTAL_ROUNDS) {
           endGame(nextGoals, nextScore);
         } else {
           loadQuestion(nextIndex);
         }
-      }, 1550);
+      };
     },
     [
       combo,
@@ -833,7 +846,6 @@ function PenaltyTwelvePage() {
       getComboMessage,
       goals,
       loadQuestion,
-      schedule,
       score,
       t,
     ],
@@ -857,14 +869,14 @@ function PenaltyTwelvePage() {
         type: "miss",
       });
 
-      schedule(() => {
+      advanceAfterMessageRef.current = () => {
         const nextIndex = currentIndex + 1;
         if (nextIndex >= TOTAL_ROUNDS) {
           endGame(goals, score);
         } else {
           loadQuestion(nextIndex);
         }
-      }, 1750);
+      };
     },
     [
       currentIndex,
@@ -872,7 +884,6 @@ function PenaltyTwelvePage() {
       getRandomMissLabel,
       goals,
       loadQuestion,
-      schedule,
       score,
       t,
     ],
@@ -1075,22 +1086,28 @@ function PenaltyTwelvePage() {
                 ) : null}
 
                 {message ? (
-                  <div className="penalty-twelve-message show">
-                    <div
-                      className={[
-                        "penalty-twelve-result-word",
-                        message.type === "goal" ? "goal-text" : "miss-text",
-                      ].join(" ")}
-                    >
-                      {message.type === "goal"
-                        ? t("games.penaltyTwelve.goal")
-                        : message.missLabel}
+                  <button
+                    className="penalty-twelve-message-layer"
+                    onClick={dismissMessage}
+                    type="button"
+                  >
+                    <div className="penalty-twelve-message show">
+                      <div
+                        className={[
+                          "penalty-twelve-result-word",
+                          message.type === "goal" ? "goal-text" : "miss-text",
+                        ].join(" ")}
+                      >
+                        {message.type === "goal"
+                          ? t("games.penaltyTwelve.goal")
+                          : message.missLabel}
+                      </div>
+                      <div className="penalty-twelve-answer-text">{message.answer}</div>
+                      {message.combo ? (
+                        <div className="penalty-twelve-combo-text">{message.combo}</div>
+                      ) : null}
                     </div>
-                    <div className="penalty-twelve-answer-text">{message.answer}</div>
-                    {message.combo ? (
-                      <div className="penalty-twelve-combo-text">{message.combo}</div>
-                    ) : null}
-                  </div>
+                  </button>
                 ) : null}
               </div>
 

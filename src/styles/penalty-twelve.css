@@ -586,6 +586,18 @@
   animation: penaltyTwelveImpactPop 0.35s ease-out;
 }
 
+.penalty-twelve-message-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .penalty-twelve-message {
   position: absolute;
   left: 50%;

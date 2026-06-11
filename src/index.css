@@ -3022,6 +3022,18 @@ button:disabled {
   animation: battleJetDebrisFly 0.75s ease-out forwards;
 }
 
+.battle-jet-message-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .battle-jet-message {
   position: absolute;
   left: 50%;

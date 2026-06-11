@@ -268,6 +268,7 @@ function BattleJetQuizPage() {
   const jetRef = useRef(null);
   const missileRef = useRef(null);
   const timeoutIdsRef = useRef([]);
+  const advanceAfterMessageRef = useRef(null);
 
   const wordBank = useMemo(() => {
     const savedWords = words
@@ -329,6 +330,7 @@ function BattleJetQuizPage() {
   }, []);
 
   const resetAnimation = useCallback(() => {
+    advanceAfterMessageRef.current = null;
     setMessage(null);
     setJetExploding(false);
     setJetPaused(false);
@@ -579,6 +581,17 @@ function BattleJetQuizPage() {
     [getRank],
   );
 
+  const dismissMessage = useCallback(() => {
+    const advance = advanceAfterMessageRef.current;
+    if (!advance) {
+      return;
+    }
+
+    advanceAfterMessageRef.current = null;
+    setMessage(null);
+    advance();
+  }, []);
+
   const handleCorrect = useCallback(
     (choice, question) => {
       const nextCombo = combo + 1;
@@ -610,16 +623,16 @@ function BattleJetQuizPage() {
         type: "hit",
       });
 
-      schedule(() => {
+      advanceAfterMessageRef.current = () => {
         const nextIndex = currentIndex + 1;
         if (nextIndex >= TOTAL_ROUNDS) {
           endGame(nextHits, nextScore);
         } else {
           loadQuestion(nextIndex);
         }
-      }, 1600);
+      };
     },
-    [combo, currentIndex, endGame, getComboMessage, hits, loadQuestion, schedule, score, t],
+    [combo, currentIndex, endGame, getComboMessage, hits, loadQuestion, score, t],
   );
 
   const handleWrong = useCallback(
@@ -639,16 +652,16 @@ function BattleJetQuizPage() {
         type: "miss",
       });
 
-      schedule(() => {
+      advanceAfterMessageRef.current = () => {
         const nextIndex = currentIndex + 1;
         if (nextIndex >= TOTAL_ROUNDS) {
           endGame(hits, score);
         } else {
           loadQuestion(nextIndex);
         }
-      }, 1700);
+      };
     },
-    [currentIndex, endGame, hits, loadQuestion, schedule, score, t],
+    [currentIndex, endGame, hits, loadQuestion, score, t],
   );
 
   const chooseAnswer = useCallback(
@@ -877,22 +890,28 @@ function BattleJetQuizPage() {
                 </div>
 
                 {message ? (
-                  <div className="battle-jet-message show">
-                    <div
-                      className={[
-                        "battle-jet-result-word",
-                        message.type === "hit" ? "hit-text" : "miss-text",
-                      ].join(" ")}
-                    >
-                      {message.type === "hit"
-                        ? t("games.battleJet.hit")
-                        : t("games.battleJet.miss")}
+                  <button
+                    className="battle-jet-message-layer"
+                    onClick={dismissMessage}
+                    type="button"
+                  >
+                    <div className="battle-jet-message show">
+                      <div
+                        className={[
+                          "battle-jet-result-word",
+                          message.type === "hit" ? "hit-text" : "miss-text",
+                        ].join(" ")}
+                      >
+                        {message.type === "hit"
+                          ? t("games.battleJet.hit")
+                          : t("games.battleJet.miss")}
+                      </div>
+                      <div className="battle-jet-answer-text">{message.answer}</div>
+                      {message.combo ? (
+                        <div className="battle-jet-combo-text">{message.combo}</div>
+                      ) : null}
                     </div>
-                    <div className="battle-jet-answer-text">{message.answer}</div>
-                    {message.combo ? (
-                      <div className="battle-jet-combo-text">{message.combo}</div>
-                    ) : null}
-                  </div>
+                  </button>
                 ) : null}
               </div>
 
