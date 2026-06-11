@@ -141,6 +141,16 @@ const zhHant = {
           "已儲存 {{imported}} 個單字，尚有 {{remaining}} 個待儲存，略過 {{skipped}} 個重複項目。",
         partialSaveRetry:
           "已儲存 {{imported}} 個單字，尚有 {{remaining}} 個未儲存，請修正後再試。",
+        retryAi: "重新 AI 填寫",
+        retryingAi: "AI 填寫中...",
+        retrySuccess: "「{{term}}」已完成 AI 填寫。",
+        retryFailed: "「{{term}}」AI 填寫失敗：{{reason}}",
+        retryAllFailed: "重新 AI 填寫失敗項目（{{count}}）",
+        retryingAllFailed: "重新填寫中...",
+        retryAllSuccess: "已重新完成 {{count}} 個單字的 AI 填寫。",
+        retryAllPartial:
+          "已重新完成 {{success}} 個單字，仍有 {{failed}} 個需要再試。",
+        retryAllFailedMessage: "AI 填寫仍然失敗，請稍後再試。",
       },
     },
     wordDetail: {
@@ -585,6 +595,15 @@ export const translations = {
           "Saved {{imported}} words. {{remaining}} still need saving. Skipped {{skipped}} duplicates.",
         partialSaveRetry:
           "Saved {{imported}} words. {{remaining}} could not be saved yet. Fix the issue and try again.",
+        retryAi: "Retry AI Fill",
+        retryingAi: "AI filling...",
+        retrySuccess: 'AI fill completed for "{{term}}".',
+        retryFailed: 'AI fill failed for "{{term}}": {{reason}}',
+        retryAllFailed: "Retry AI Fill for Failed ({{count}})",
+        retryingAllFailed: "Retrying...",
+        retryAllSuccess: "AI fill completed for {{count}} words.",
+        retryAllPartial: "AI fill completed for {{success}} words. {{failed}} still need retry.",
+        retryAllFailedMessage: "AI fill still failed. Please try again later.",
       },
     },
     wordDetail: {

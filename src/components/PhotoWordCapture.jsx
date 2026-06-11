@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useLocale } from "../features/locale/LocaleContext.jsx";
 import {
   completeWordsInBatch,
+  fetchCompleteWord,
   fetchExtractedWords,
+  suggestionToFormValues,
 } from "../features/words/completeWordApi.js";
 import { WORD_SOURCES, normalizeTerm } from "../features/words/wordTypes.js";
 import { useWordsContext } from "../features/words/WordsContext.jsx";
@@ -70,6 +72,8 @@ function PhotoWordCapture() {
   const [isExtracting, setIsExtracting] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [retryingWordId, setRetryingWordId] = useState(null);
+  const [isRetryingAllFailed, setIsRetryingAllFailed] = useState(false);
   const [completionProgress, setCompletionProgress] = useState({ current: 0, total: 0 });
 
   const existingTerms = useMemo(
@@ -85,6 +89,11 @@ function PhotoWordCapture() {
   const allSelectableSelected =
     selectableTerms.length > 0 &&
     selectableTerms.every((term) => selectedTerms.includes(term));
+
+  const fallbackPreviewWords = useMemo(
+    () => previewWords.filter((word) => word.usedFallback),
+    [previewWords],
+  );
 
   useEffect(() => {
     if (!initialState.hasRestoredDraft || hasShownRestoreMessageRef.current) {
@@ -258,6 +267,97 @@ function PhotoWordCapture() {
           : word,
       ),
     );
+  }
+
+  async function handleRetryAiForWord(wordId) {
+    const word = previewWords.find((item) => item.id === wordId);
+
+    if (!word) {
+      return;
+    }
+
+    try {
+      setRetryingWordId(wordId);
+      setError("");
+
+      const result = await fetchCompleteWord(word.term);
+
+      setPreviewWords((currentWords) =>
+        currentWords.map((item) =>
+          item.id === wordId
+            ? {
+                ...item,
+                ...suggestionToFormValues(result.suggestion),
+                usedFallback: false,
+              }
+            : item,
+        ),
+      );
+      setStatusMessage(t("addWord.photo.retrySuccess", { term: word.term }));
+    } catch (retryError) {
+      setError(
+        t("addWord.photo.retryFailed", {
+          reason: retryError.message,
+          term: word.term,
+        }),
+      );
+    } finally {
+      setRetryingWordId(null);
+    }
+  }
+
+  async function handleRetryAllFailed() {
+    const failedWords = previewWords.filter((word) => word.usedFallback);
+
+    if (failedWords.length === 0) {
+      return;
+    }
+
+    try {
+      setIsRetryingAllFailed(true);
+      setError("");
+
+      let successCount = 0;
+
+      for (const word of failedWords) {
+        setRetryingWordId(word.id);
+
+        try {
+          const result = await fetchCompleteWord(word.term);
+
+          setPreviewWords((currentWords) =>
+            currentWords.map((item) =>
+              item.id === word.id
+                ? {
+                    ...item,
+                    ...suggestionToFormValues(result.suggestion),
+                    usedFallback: false,
+                  }
+                : item,
+            ),
+          );
+          successCount += 1;
+        } catch {
+          // Keep demo fallback for this word and continue with the rest.
+        }
+      }
+
+      if (successCount === failedWords.length) {
+        setStatusMessage(t("addWord.photo.retryAllSuccess", { count: successCount }));
+      } else if (successCount > 0) {
+        setStatusMessage(
+          t("addWord.photo.retryAllPartial", {
+            failed: failedWords.length - successCount,
+            success: successCount,
+          }),
+        );
+      } else {
+        setError(t("addWord.photo.retryAllFailedMessage"));
+      }
+    } finally {
+      setRetryingWordId(null);
+      setIsRetryingAllFailed(false);
+    }
   }
 
   async function handleSaveAll() {
@@ -520,13 +620,29 @@ function PhotoWordCapture() {
               <h3 className="font-bold text-blue-950">{t("addWord.photo.previewTitle")}</h3>
               <p className="mt-1 text-sm text-slate-600">{t("addWord.photo.previewDescription")}</p>
             </div>
-            <button
-              className="rounded-full border border-blue-200 bg-white px-4 py-2 text-sm font-bold text-blue-700"
-              onClick={() => setStep("select")}
-              type="button"
-            >
-              {t("addWord.photo.backToSelect")}
-            </button>
+            <div className="flex flex-wrap gap-2">
+              {fallbackPreviewWords.length > 0 ? (
+                <button
+                  className="rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-bold text-amber-900 transition hover:bg-amber-100 disabled:opacity-60"
+                  disabled={isRetryingAllFailed || Boolean(retryingWordId) || isSaving}
+                  onClick={handleRetryAllFailed}
+                  type="button"
+                >
+                  {isRetryingAllFailed
+                    ? t("addWord.photo.retryingAllFailed")
+                    : t("addWord.photo.retryAllFailed", {
+                        count: fallbackPreviewWords.length,
+                      })}
+                </button>
+              ) : null}
+              <button
+                className="rounded-full border border-blue-200 bg-white px-4 py-2 text-sm font-bold text-blue-700"
+                onClick={() => setStep("select")}
+                type="button"
+              >
+                {t("addWord.photo.backToSelect")}
+              </button>
+            </div>
           </div>
 
           <div className="space-y-3">
@@ -548,9 +664,25 @@ function PhotoWordCapture() {
                     <span>{word.term}</span>
                   </label>
                   {word.usedFallback ? (
-                    <span className="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-800">
-                      {t("addWord.photo.demoFallback")}
-                    </span>
+                    <div className="flex flex-wrap items-center justify-end gap-2">
+                      <span className="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-800">
+                        {t("addWord.photo.demoFallback")}
+                      </span>
+                      <button
+                        className="rounded-full border border-amber-200 bg-white px-3 py-1 text-xs font-bold text-amber-900 transition hover:bg-amber-50 disabled:opacity-60"
+                        disabled={
+                          isRetryingAllFailed ||
+                          retryingWordId === word.id ||
+                          isSaving
+                        }
+                        onClick={() => handleRetryAiForWord(word.id)}
+                        type="button"
+                      >
+                        {retryingWordId === word.id
+                          ? t("addWord.photo.retryingAi")
+                          : t("addWord.photo.retryAi")}
+                      </button>
+                    </div>
                   ) : null}
                 </div>
 
