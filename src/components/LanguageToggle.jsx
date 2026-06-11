@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { useLocale } from "../features/locale/LocaleContext.jsx";
 
 const LOCALE_OPTIONS = [
-  { id: "zh-Hans", label: "簡體" },
+  { id: "zh-Hans", label: "简体" },
   { id: "zh-Hant", label: "繁體" },
-  { id: "en", label: "英文" },
+  { id: "en", label: "English" },
 ];
 
 function getCurrentLabel(locale) {

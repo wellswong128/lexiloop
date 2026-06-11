@@ -8,10 +8,7 @@ import {
 import { WORD_SOURCES } from "../features/words/wordTypes.js";
 import { useWordsContext } from "../features/words/WordsContext.jsx";
 import { compressImageFile } from "../lib/compressImage.js";
-
-function normalizeManualTerm(value) {
-  return value.trim().toLowerCase().replace(/[^a-z'-]/g, "");
-}
+import { splitIntoSingleWordTerms } from "../../lib/normalizeWordTerms.js";
 
 function PhotoWordCapture() {
   const { t } = useLocale();
@@ -39,6 +36,15 @@ function PhotoWordCapture() {
     [words],
   );
 
+  const selectableTerms = useMemo(
+    () => detectedWords.filter((term) => !existingTerms.has(term)),
+    [detectedWords, existingTerms],
+  );
+
+  const allSelectableSelected =
+    selectableTerms.length > 0 &&
+    selectableTerms.every((term) => selectedTerms.includes(term));
+
   async function handleImageFile(file) {
     try {
       setError("");
@@ -51,10 +57,10 @@ function PhotoWordCapture() {
       setImageDataUrl(compressed.dataUrl);
 
       const extractedWords = await fetchExtractedWords(compressed.dataUrl);
-      const terms = extractedWords.map((item) => item.term);
+      const terms = splitIntoSingleWordTerms(extractedWords.map((item) => item.term));
 
       setDetectedWords(terms);
-      setSelectedTerms(terms.filter((term) => !existingTerms.has(term)));
+      setSelectedTerms([]);
       setStep("select");
       setStatusMessage(t("addWord.photo.detectedCount", { count: terms.length }));
     } catch (imageError) {
@@ -82,19 +88,39 @@ function PhotoWordCapture() {
     );
   }
 
-  function handleAddManualTerm() {
-    const term = normalizeManualTerm(manualTerm);
+  function toggleSelectAll() {
+    setSelectedTerms(allSelectableSelected ? [] : selectableTerms);
+  }
 
-    if (!term) {
+  function handleAddManualTerm() {
+    const terms = splitIntoSingleWordTerms(manualTerm);
+
+    if (terms.length === 0) {
       return;
     }
 
-    setDetectedWords((currentWords) =>
-      currentWords.includes(term) ? currentWords : [...currentWords, term],
-    );
-    setSelectedTerms((currentTerms) =>
-      currentTerms.includes(term) ? currentTerms : [...currentTerms, term],
-    );
+    setDetectedWords((currentWords) => {
+      const nextWords = [...currentWords];
+
+      terms.forEach((term) => {
+        if (!nextWords.includes(term)) {
+          nextWords.push(term);
+        }
+      });
+
+      return nextWords;
+    });
+    setSelectedTerms((currentTerms) => {
+      const nextTerms = [...currentTerms];
+
+      terms.forEach((term) => {
+        if (!nextTerms.includes(term)) {
+          nextTerms.push(term);
+        }
+      });
+
+      return nextTerms;
+    });
     setManualTerm("");
   }
 
@@ -293,6 +319,19 @@ function PhotoWordCapture() {
               type="button"
             >
               {t("addWord.photo.retake")}
+            </button>
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              className="rounded-full border border-blue-200 bg-white px-4 py-2 text-sm font-bold text-blue-700 transition hover:bg-blue-50 disabled:bg-slate-100 disabled:text-slate-400"
+              disabled={selectableTerms.length === 0}
+              onClick={toggleSelectAll}
+              type="button"
+            >
+              {allSelectableSelected
+                ? t("addWord.photo.unselectAll")
+                : t("addWord.photo.selectAll")}
             </button>
           </div>
 

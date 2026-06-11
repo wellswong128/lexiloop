@@ -1,3 +1,5 @@
+import { splitIntoSingleWordTerms } from "../lib/normalizeWordTerms.js";
+
 const AGNES_API_URL = "https://apihub.agnes-ai.com/v1/chat/completions";
 const MAX_IMAGE_CHARS = 4_500_000;
 
@@ -29,28 +31,7 @@ function parseAgnesJson(data) {
 }
 
 function normalizeExtractedWords(words) {
-  if (!Array.isArray(words)) {
-    return [];
-  }
-
-  const seen = new Set();
-  const normalized = [];
-
-  words.forEach((item) => {
-    const term = String(typeof item === "string" ? item : item?.term ?? "")
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z'-]/g, "");
-
-    if (!term || term.length < 2 || seen.has(term)) {
-      return;
-    }
-
-    seen.add(term);
-    normalized.push({ term });
-  });
-
-  return normalized;
+  return splitIntoSingleWordTerms(words).map((term) => ({ term }));
 }
 
 export default async function handler(request, response) {
@@ -108,6 +89,7 @@ Return only valid JSON in this shape:
 
 Rules:
 - lowercase single words only
+- one word per array item (never phrases like "ice cream")
 - no duplicates
 - exclude numbers and punctuation-only tokens
 - skip very common grammar words unless they are clearly vocabulary targets (skip: the, a, an, is, are, was, were, to, of, in, on, at, and, or, but)
