@@ -54,12 +54,12 @@ function AuthHero() {
   return (
     <div className="relative mx-auto mb-8 flex w-full max-w-[17rem] flex-col items-center justify-center">
       <div className="relative">
-        <div className="absolute -right-3 -top-2 size-16 rotate-12 rounded-full bg-blue-200/80 blur-[1px]" />
-        <div className="relative overflow-hidden rounded-[2rem] rounded-br-md border-4 border-white bg-gradient-to-br from-blue-100 via-white to-amber-50 px-6 py-5 shadow-xl shadow-blue-900/10">
+        <div className="absolute -right-3 -top-2 size-16 rotate-12 rounded-full bg-amber-200/80 blur-[1px]" />
+        <div className="auth-mascot-card relative overflow-hidden rounded-[2rem] rounded-br-md border-4 border-white px-6 py-5">
           <LexiMascot className="lexi-mascot-auth" size="lg" title={t("brand.mascotAlt")} />
         </div>
       </div>
-      <p className="mt-3 text-sm font-bold text-blue-700">{t("brand.mascotName")}</p>
+      <p className="auth-mascot-name mt-3 text-sm font-bold">{t("brand.mascotName")}</p>
     </div>
   );
 }

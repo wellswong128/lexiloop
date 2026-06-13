@@ -198,12 +198,16 @@ function HomePage() {
   });
 
   return (
-    <section className="home-page relative w-full max-w-5xl overflow-hidden rounded-[2rem] border border-blue-200/60 bg-white/95 p-4 shadow-2xl shadow-blue-950/10 backdrop-blur sm:p-8">
+    <section className="home-page relative w-full max-w-5xl overflow-hidden rounded-[2rem] p-4 sm:p-8">
       <div aria-hidden="true" className="home-page-glow home-page-glow-left" />
       <div aria-hidden="true" className="home-page-glow home-page-glow-right" />
+      <div aria-hidden="true" className="home-page-bubble home-page-bubble-a" />
+      <div aria-hidden="true" className="home-page-bubble home-page-bubble-b" />
+      <div aria-hidden="true" className="home-page-bubble home-page-bubble-c" />
 
       <div className="home-hero relative text-center">
         <div className="home-mascot-wrap">
+          <div aria-hidden="true" className="home-mascot-halo" />
           <LexiMascot className="lexi-mascot-home" size="xl" title={t("brand.mascotAlt")} />
         </div>
         <p className="home-eyebrow">{t("home.eyebrow")}</p>

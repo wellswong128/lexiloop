@@ -58,7 +58,7 @@ function AppLayout({ children }) {
       className={
         isGamePage
           ? "game-layout-shell flex min-h-0 flex-col overflow-hidden"
-          : "flex min-h-[100svh] flex-col bg-blue-50 text-slate-900"
+          : "app-shell flex min-h-[100svh] flex-col text-slate-900"
       }
     >
       {showFloatingMenu ? <LexiFloatingMenu /> : null}

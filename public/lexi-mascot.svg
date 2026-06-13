@@ -1,21 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="LexiLand mascot">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="LexiLand mascot Lexi">
   <defs>
-    <linearGradient id="body" x1="20%" x2="80%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#60a5fa"/>
-      <stop offset="55%" stop-color="#2563eb"/>
-      <stop offset="100%" stop-color="#1d4ed8"/>
+    <linearGradient id="head" x1="20%" x2="80%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffd93d"/>
+      <stop offset="55%" stop-color="#ff8e53"/>
+      <stop offset="100%" stop-color="#ff6b6b"/>
     </linearGradient>
-    <linearGradient id="cover" x1="0%" x2="100%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#fde68a"/>
-      <stop offset="100%" stop-color="#f59e0b"/>
+    <linearGradient id="book-left" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="book-right" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#6ee7d6"/>
+      <stop offset="100%" stop-color="#4dccbd"/>
     </linearGradient>
   </defs>
-  <path d="M60 18c-22 0-36 16-36 36 0 14 6 26 14 33v8c0 4 3 7 7 7h30c4 0 7-3 7-7v-8c8-7 14-19 14-33 0-20-14-36-36-36z" fill="url(#body)"/>
-  <circle cx="44" cy="52" fill="#fff" r="9"/>
-  <circle cx="76" cy="52" fill="#fff" r="9"/>
-  <circle cx="46" cy="52" fill="#0f172a" r="4.5"/>
-  <circle cx="78" cy="52" fill="#0f172a" r="4.5"/>
-  <path d="M48 66c4 4 20 4 24 0" fill="none" stroke="#1e3a8a" stroke-linecap="round" stroke-width="3"/>
-  <rect fill="url(#cover)" height="24" rx="3" width="52" x="34" y="72"/>
-  <path d="M60 6l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z" fill="#fde047" stroke="#f59e0b" stroke-width="1"/>
+  <ellipse cx="60" cy="112" fill="rgba(255,107,107,0.18)" rx="34" ry="6"/>
+  <circle cx="60" cy="40" fill="url(#head)" r="24" stroke="#e85d04" stroke-width="2"/>
+  <ellipse cx="49" cy="38" fill="#fff" rx="9" ry="10" stroke="#1e3a5f" stroke-width="1.5"/>
+  <ellipse cx="71" cy="38" fill="#fff" rx="9" ry="10" stroke="#1e3a5f" stroke-width="1.5"/>
+  <circle cx="51" cy="39" fill="#1e3a5f" r="5"/>
+  <circle cx="73" cy="39" fill="#1e3a5f" r="5"/>
+  <path d="M50 50 Q60 58 70 50" fill="#fff" stroke="#1e3a5f" stroke-linecap="round" stroke-width="1.5"/>
+  <path d="M60 58 L34 64 L34 92 Q34 96 38 96 L58 92 Z" fill="url(#book-left)" stroke="#6d28d9" stroke-width="1.5"/>
+  <path d="M60 58 L86 64 L86 92 Q86 96 82 96 L62 92 Z" fill="url(#book-right)" stroke="#0d9488" stroke-width="1.5"/>
+  <rect fill="#fffbeb" height="28" rx="1" width="22" x="36" y="66"/>
+  <rect fill="#fffbeb" height="28" rx="1" width="22" x="62" y="66"/>
+  <circle cx="60" cy="12" fill="#ffd93d" r="11" stroke="#f59e0b" stroke-width="2"/>
+  <path d="M60 3l2.2 4.4 4.9.7-3.5 3.4.8 4.9-4.4-2.3-4.4 2.3.8-4.9-3.5-3.4 4.9-.7z" fill="#fffbeb"/>
 </svg>
